@@ -4,3 +4,4 @@ poo 자료실 - http://192.168.0.119/
 fastcampus - https://www.fastcampus.co.kr/
 RNN위키독스 - https://wikidocs.net/22886 
 교육과정 교과서 - https://www.kyohak.co.kr/2014textbooks/index.asp
+고려대 직업 훈련 인터넷 강좌  - https://kuhrd.step.or.kr/page/lms
