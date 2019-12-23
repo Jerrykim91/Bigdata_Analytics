@@ -16,6 +16,7 @@ for key in nums:score_table[ key ] = nums.index( key ) +1
 # 트럼트 K는 패널티를 주어서 -5점이다
 score_table[ 'K' ]  = -5
 # 함수지향적 프로그램으로 작성중에 추가된 변수
+# 전역변수 (모든구간에서 사용가능 but 함수안에서 수정은 안된다. )
 player_name         = None
 myTotalScore        = 0
 game_level          = 0
@@ -36,7 +37,9 @@ def main():
     step5(gameTitle)
     step6(gameTitle)
     while isOneGaming:
-        step7()
+        step7() 
+    # 게임한판이라서 안에서 호출하는것보다 
+    # 이렇게 표현하는것이 낫다고 판단. 
 
 def step1():
     print( "Enjoy Custom Game world" )    
@@ -66,6 +69,8 @@ def step3():
         elif len(tmp)>PLAYER_NAME_LEN_MAX:
             print("%s자가 초과되었습니다." % PLAYER_NAME_LEN_MAX) 
         else:
+            # 지역변수인가 전역인가  => 초기화는 수정인가 ? 
+            # player_name = tmp  => 초기화
             player_name = tmp
             # 플레이어의 이름으로 저장된 점수를 읽어서 로드 
             # 만약 없으면 0점 으로 시작
@@ -106,7 +111,10 @@ def step6(gameTitle):
     print('{0:^40}'.format('press enter key!!'))
     while True:input();break # 한줄에 여러문장을 기술할때는 구분자로 ; 사용
 
-def step7():
+def step7(): # 게임 한판 
+    # global isOneGaming / global myTotalScore가 전역변수임을 알린다. 
+    # > 이를 통해서 수정을 가능하게 한다. 
+    # 글로벌 변수 
     global isOneGaming
     global myTotalScore 
 
@@ -199,5 +207,7 @@ def step7():
     # # 1) python 파일명.py로 구동하면 => __name__ => '__main__' 세팅됨
     # # 2) 누군가가 파일명.py를 가져와서 사용하면 => __name__ => '파일명'
     # print( '__name__ => ', __name__ )
-    # if __name__ == '__main__':
-main()
+    if __name__ == '__main__':
+        main()
+    else : 
+        print('누군가 모듈로 땡겨서 특정기능을 사용하려한다.  ')
