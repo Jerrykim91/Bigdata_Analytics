@@ -23,9 +23,15 @@ def index():
     #     #print(j)
     #     k += j
     # print(k)
+    sum = 0 # 안에 들어가는거랑 밖에 있는거랑 차이가 나네 
+    for tmp in data:
+        sum += tmp[3]
+    print(sum)
+
+
     print('==check point2==')
     print(type(data))
-    print(data)
+    #print(data)
     return "index page"
 
 
