@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>join</title>
+</head>
+<body>
+    <!-- h3은 글자 크기 키우는거 -->
+    <h3>회원가입</h3>
+    <hr />
+    <!-- HTTP POST 메소드를 사용 이form을 전달하면 ("/join")으로 이동 => form이 아래의 정보를 전달 => data를 제출 'submit'-->
+    <form action = "/join" method = "post">
+    ID          : <input type = "text" name = "id"/><br/> 
+    PASSWORD    : <input type = "password" name = "pw"/><br/> 
+    RE-PASSWORD : <input type = "password"/><br/> 
+    NAME        : <input type = "text" name = "name"/><br/> 
+    AGE         : <input type = "text" name = "age"/><br/> 
+    <br/>
+    <input type="submit" value="회원 가입"/>
+    </form>
+</body> 
+</html>
