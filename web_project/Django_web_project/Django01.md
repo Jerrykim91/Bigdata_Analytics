@@ -66,15 +66,14 @@ $ docker logs oracle12c (주기적으로 log를 확인하여 100%가 될때까�
 
 [데이터 베이스 접속 client 프로그램 설치]
 << 설치 순서 >>
-[설치 순서_1](http://ihongss.com/zip/java8.zip)     
-jdk-8u211-windows-x64 => 다 ok       
-[설치 순서_2](http://ihongss.com/zip/sqldeveloper.zip)      
-=> DB에 접속하는 프로그램      
-sqldeveloper-19.2.0.206.2117-no-jre/sqldeveloper/sqldeveloper.exe 실행 => 하면 자바경로 입력해야해      
-[설치 순서_3](http://ihongss.com/zip/oracle_client.zip)     
-instantclient_19_3 file > C 드라이브로 이동           
-내피시 > 시스템 > 고급시스템 설정 > 환경변수          
-시스템 path 편집  > C 드라이브로 이동된 instantclient_19_3를 경로로 잡아줌          
+[설치 순서_1](http://ihongss.com/zip/java8.zip)
+jdk-8u211-windows-x64 => 다 ok 
+[설치 순서_2](http://ihongss.com/zip/sqldeveloper.zip) => DB에 접속하는 프로그램 
+sqldeveloper-19.2.0.206.2117-no-jre/sqldeveloper/sqldeveloper.exe 실행 => 하면 자바경로 입력해야해 
+[설치 순서_3](http://ihongss.com/zip/oracle_client.zip)
+instantclient_19_3 file > C 드라이브로 이동      
+내피시 > 시스템 > 고급시스템 설정 > 환경변수     
+시스템 path 편집  > C 드라이브로 이동된 instantclient_19_3를 경로로 잡아줌      
 
 
 ```bash
