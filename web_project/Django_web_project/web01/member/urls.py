@@ -16,6 +16,6 @@ from . import views
 urlpatterns = [
     # 경로 생성 => 함수형 뷰를 호출 => member/views.py로 부터 
     path('index', views.index, name = 'index'),
-    path('join' , views.join , name = 'join'),
+    path('join' , views.join,  name = 'join'),
     path('login', views.login, name = 'login')
 ]

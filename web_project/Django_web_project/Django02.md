@@ -9,8 +9,11 @@ $ django-admin startapp member <= member 앱 생성
 $ django-admin startapp board <= board 앱 생성(여러개 생성 가능)
 $ python manage.py runserver <= django 서버 구동(http://127.0.0.1:8000/)
 
-```
+# DB연동
+$ python manage.py migrate
 
+```
+4번째_ DB Browser for SQLite - .zip (no installer) for 64-bit Windows[주소로 이동](https://sqlitebrowser.org/dl/)
 ---
 
 Django web project
