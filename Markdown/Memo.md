@@ -14,7 +14,9 @@ fastcampus     - https://www.fastcampus.co.kr/
             - Flask 맛보기  
             - **장고** 
     #  1월
-        -
+        - 파이썬_웹 
+         - Flask 맛보기  
+          - **장고**
     #  2월
         -
     #  3월
@@ -147,12 +149,33 @@ fastcampus     - https://www.fastcampus.co.kr/
     - 웹 base 제작 
 
 #### 2019.12.30
-- 파이썬을 이용한 웹 생성_장고
-    - django
-        - conda install django
-    - 웹 base 구현
-    -  
+- 파이썬을 이용한 웹 - django
+    - 프로젝트 생성 
+        - 어플리케이션 추가 member
+    - 데이터 베이스 연동
     
+#### 2019.12.31
+- Django web
+    - 회원 정보 수정 
+    - 회원 삭제 
+    - 
+
+
+#### 2020.01.02
+- Django web
+    - 어플리케이션 생성 
+        - board
+            - 모델 추가
+        - 게시판 생성 
+            - 글쓰기 
+            - 목차 생성 
+            - 글 뷰어
+            - 이미지올리기
+            - DB연동
+        - 관리자 계정 진입
+                 
+
+
 ----
 
 
