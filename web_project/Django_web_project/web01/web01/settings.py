@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'board'
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,28 @@ WSGI_APPLICATION = 'web01.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # sqlite DB사용시
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        #  mysql
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'DB명',
+        # 'USER': '아이디명',
+        # 'PASSWORD' : '암호',
+        # 'HOST' : '127.0.0.1',
+        # 'PORT' : '포토번호'
+
+        # oracle
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'xe', #SID
+        'USER': 'admin',
+        'PASSWORD' : '1234',
+        'HOST' : '192.168.99.100',
+        'PORT' : '32764'
+
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -103,7 +124,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
 TIME_ZONE = 'UTC'
 
@@ -118,3 +140,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# 추가
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

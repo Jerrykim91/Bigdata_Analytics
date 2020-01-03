@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+</head>
+
+<body>
+    <div class="container">
+        <div style="margin-top:10px; margin-bottom: 5px;">
+        <h2>게시판 목록</h2>
+        <a href="/board/write"  class='btn btn-primary'>글쓰기</a>
+        </div>
+        <table class="table table-hover">
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>날짜</th>
+
+            </tr>
+            {% for one in abc %}
+            <tr>
+                <td>{{ one.0 }}</td> 
+                <td><a href="/board/content?no={{ one.0 }}">{{one.1}}</a></td>
+                <td>{{ one.2 }}</td>
+                <td>{{ one.3 }}</td>
+                <td>{{ one.4 }}</td>
+            </tr>
+            {% endfor %}
+         </table>
+    </div>
+</body>
+</html>
+

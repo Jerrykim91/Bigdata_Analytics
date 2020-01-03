@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>content</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+
+</head>
+<body>
+    
+
+    <div class="container">
+            <div style="margin-top:10px; margin-bottom: 5px;">
+
+            <a href="/board/edit" class="btn btn-success">글수정</a>
+            <a href="/board/delete" class="btn btn-success">글삭제</a>
+            <p class="text-right"> 조회수 - {{ one.4 }}</p>
+            <h2> {{ one.0 }}.{{ one.1 }} </h2>
+            <hr />
+            </div>
+
+        <table class="table">
+            <tr>
+                <th class="bg-success"> NO </th>
+                <td >{{ one.0 }}</td>
+            </tr>
+
+            <tr>
+                <th class="bg-success"> WITTER </th>
+                <td>{{ one.3 }}</td>
+            </tr>
+
+            <tr>
+                <th class="bg-success"> DATETIME </th>
+                <td>{{ one.5 }}</td>
+            </tr>
+
+            <tr>
+                <th class="bg-success"> COUNT </th>
+                <td>{{ one.4 }}</td>
+            </tr>
+
+            <tr>
+                <th class="bg-success"> TITLE </th>
+                <td>{{ one.1 }}</td>
+            </tr>
+
+            <tr>
+                <th class="bg-success"> CONTENT </th >
+                <td>{{ one.2 }}</td>
+            </tr>
+            
+
+        </table>
+        <a href="/board/list" class="btn btn-success">목록으로</a>
+        <a href="/board/content" class="btn btn-success">이전글</a>
+        <a href="/board/content" class="btn btn-success">다음글</a>
+    </div>
+</body>
+</html>
+
+
+
