@@ -13,7 +13,10 @@ from . import views
 # Board/views.py로 부터 => html을 생성 할때 마다 경로 생성 
 # path('urls이름', views.urls이름, name = 'urls이름')
 urlpatterns = [
-     path('write', views.write, name = 'write'),
+
      path('list', views.list, name = 'list'),
+     path('write', views.write, name = 'write'),
      path('content', views.content, name = 'content'),
+     path('edit', views.edit, name = 'edit'),
+     path('delete', views.delete, name = 'delete'),
 ]

@@ -24,6 +24,47 @@ cursor = connection.cursor() #sql문 수행위한 cursor객체
 
 
 
+@csrf_exempt
+def edit(request):
+    if request.method == 'GET':
+        no = request.GET.get( "no", 0 )
+        sql =""" 
+            SELECT NO, TITLE, CONTENT
+            FROM BOARD_TABLE1
+            WHERE NO = %s
+        """
+        cursor.execute( sql, [no] )
+        data = cursor.fetchone()
+        return render(request,'board/edit.html', {"one": data})
+
+    elif request.method == 'POST':
+        no = request.POST['no']
+        ti = request.POST['title']
+        co = request.POST['content']
+        
+        arr = [ ti, co, no ]
+        sql = """
+            UPDATE BOARD_TABLE1 SET TITLE=%s, 
+            CONTENT=%s WHERE NO= %s
+        """
+        cursor.execute( sql, arr )
+        return redirect("/board/content?no=" +no)
+
+
+
+@csrf_exempt
+def delete(request):
+    if request.method == 'GET':
+        #  no = request.GET["no"]
+        # get(content/?no=0 )출력 할려고 작성  => 페이지가 없을 때
+        no = request.GET.get( "no", 0 )
+        sql =""" 
+            DELETE FROM BOARD_TABLE1
+            WHERE NO=%s
+        """
+        cursor.execute( sql, [no] )
+        return redirect("/board/list")
+
 # content
 # http://127.0.0.1:8000/board/content?no=43
 # http://127.0.0.1:8000/board/content => 오류 발생 => no를 못받아서 오류발생

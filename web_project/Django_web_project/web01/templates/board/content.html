@@ -15,8 +15,9 @@
             <div style="margin-top:10px; margin-bottom: 5px;">
 
             <a href="/board/write" class="btn btn-success"> 글쓰기 </a>
-            <a href="/board/edit" class="btn btn-success"> 글수정 </a>
-            <a href="/board/delete" class="btn btn-success"> 글삭제</a>
+            <a href="/board/edit?no={{one.0}}" class="btn btn-success"> 글수정 </a>
+
+            <a href="/board/delete?no={{one.0}}" class="btn btn-success"> 글삭제</a>
             <p class="text-right"> 조회수 - {{ one.4 }}</p>
             <h2> {{ one.0 }}.{{ one.1 }} </h2>
             <hr />
