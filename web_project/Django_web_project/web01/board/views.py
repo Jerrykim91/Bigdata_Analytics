@@ -45,6 +45,28 @@ def content(request):
             """
             cursor.execute( sql, [no] )
             request.session['hit'] = 0 
+
+        # 이전글 번호 가져오기
+        sql = """
+                SELECT NVL(MAX(NO),0)
+                FROM  BOARD_TABLE1
+                WHERE NO < %s  
+            """
+        cursor.execute(sql, [no])
+        prev = cursor.fetchone()
+            
+        # 다음글 번호 가져오기 
+        # => prev랑 비교해서 널 값 안에 max()를 min()으로 선언하고 
+        # => 쿼리문과 변수명도 수정 
+        sql = """
+                SELECT NVL(MIN(NO),0)
+                FROM  BOARD_TABLE1
+                WHERE NO > %s  
+            """
+        cursor.execute(sql, [no])
+        nxt = cursor.fetchone()
+
+
         # 가져오기
         sql = """
         SELECT
@@ -68,14 +90,16 @@ def content(request):
             img64 = b64encode(img).decode("utf-8")
         # DB에 이미지가 없는 경우
         else:
-            #print( os.path.join(BASE_DIR) )
+            # print( os.path.join(BASE_DIR) )
             file = open('./static/img/default.png' , 'rb')
             img = file.read()
             img64 = b64encode(img).decode("utf-8")
 
         #print(no)
-        # 무엇을 출력하는지 확인할것 => 이미지 단계) 위에 선언하고 img를 dict에 담아 출력 
-        return render( request, 'board/content.html', {"one":data, "image":img64} )
+        # 무엇을 출력하는지 확인할것 
+        # => 이미지 단계) 위에 선언후 img를 dict에 담아 출력 
+        # 추가 )  => 글 번호 전후 출력문  
+        return render( request, 'board/content.html', {"one":data, "image":img64 , "prev":prev[0] , "next":nxt[0] } )
     
 
 
@@ -106,13 +130,22 @@ def write(request):
     if request.method == 'GET':
         return render( request, 'board/write.html')
     elif request.method =='POST':
-        img = request.FILES['img']#name값 img
+        #img = request.FILES['img']#name값 img
+        
+        # 'img'는 사용자로부터 입력받은 이미지
+        # 담는다 이미지 변수에 사용자 요청을  
+        tmp = None
+        if 'img' in request.FILES:
+            img = request.FILES['img']
+            tmp = img.read()
+
         arr = [
             request.POST['title'],
             request.POST['content'],
             request.POST['writer'],
             # 이미지 리드 
-            img.read()
+            # img.read(),
+            tmp
         ]
         try:
             print(arr)

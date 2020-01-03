@@ -14,14 +14,15 @@
     <div class="container">
             <div style="margin-top:10px; margin-bottom: 5px;">
 
-            <a href="/board/edit" class="btn btn-success">글수정</a>
-            <a href="/board/delete" class="btn btn-success">글삭제</a>
+            <a href="/board/write" class="btn btn-success"> 글쓰기 </a>
+            <a href="/board/edit" class="btn btn-success"> 글수정 </a>
+            <a href="/board/delete" class="btn btn-success"> 글삭제</a>
             <p class="text-right"> 조회수 - {{ one.4 }}</p>
             <h2> {{ one.0 }}.{{ one.1 }} </h2>
             <hr />
             </div>
 
-        <table class="table">
+        <table class="table" >
             <tr>
                 <th class="bg-success"> NO </th>
                 <td >{{ one.0 }}</td>
@@ -48,24 +49,40 @@
             </tr>
 
             <tr>
-                <th class="bg-success"> CONTENT </th >
-                <td>{{ one.2 }}</td>
+                <th class="bg-success" style="width:80px;" > CONTENT </th >
+                <td style="width:80px;">{{ one.2 }}</td>
             </tr>
 
             <tr>
-                <th class="bg-success"> 이미지 </th >
-                <td><img src='data:;base64, {{ image }}'></td>
-                
-               
+                <th class="bg-success" > 이미지 </th >
+                <td><img src='data:;base64, {{ image }}' width="300px" height="200px"></td>
                <!-- <td><img src='/static/img/ddd.png'></td> -->
                <!-- 나중에 파이썬으로 돌리고 출력된 그래프를 출력하고 웹에 그래프를 업로드 할때 이 방식을 이용해야한다. -->
             </tr>
 
         </table>
-        <a href="/board/list" class="btn btn-success">목록으로</a>
-        <a href="/board/content" class="btn btn-success">이전글</a>
-        <a href="/board/content" class="btn btn-success">다음글</a>
-    </div>
+        <div>
+            {% if next != 0 and prev > 0 %}
+            <a href="/board/list" class="btn btn-success">목록으로</a>
+            {% else %}
+            <a href="#" class="btn btn-success "> 메인화면 </a>
+            {% endif %}
+
+            {% if prev > 0 %}
+            <a href="/board/content?no={{prev}}" class="btn btn-success">이전글</a>
+            {% else %}
+            <a href="#" class="btn btn-success disabled"> 첫 글 </a>
+            {% endif %}
+
+            {% if next != 0 %}
+            <a href="/board/content?no={{next}}" class="btn btn-success">다음글</a>
+            {% else %}
+            <a href="/board/list" class="btn btn-success"> 목록으로 </a>
+            {% endif %}
+
+            <p>  </p>
+        </div>
+
 </body>
 </html>
 
