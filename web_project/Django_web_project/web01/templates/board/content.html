@@ -51,7 +51,15 @@
                 <th class="bg-success"> CONTENT </th >
                 <td>{{ one.2 }}</td>
             </tr>
-            
+
+            <tr>
+                <th class="bg-success"> 이미지 </th >
+                <td><img src='data:;base64, {{ image }}'></td>
+                
+               
+               <!-- <td><img src='/static/img/ddd.png'></td> -->
+               <!-- 나중에 파이썬으로 돌리고 출력된 그래프를 출력하고 웹에 그래프를 업로드 할때 이 방식을 이용해야한다. -->
+            </tr>
 
         </table>
         <a href="/board/list" class="btn btn-success">목록으로</a>

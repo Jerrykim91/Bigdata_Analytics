@@ -7,8 +7,9 @@ from django.http import HttpResponse
 # URL의 변화여부가 필요하다면 Redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
-
-
+from base64 import b64encode
+# byte 배열을 base64(이미지를 출력해주는 포멧)로 변경 
+import os
 # 렌더(render) 
 # index에서 인자값으로 request을 받았어 
 # 받았으니까 돌려줘야해 그때 render로 뭔가를 돌려주는데 
@@ -47,21 +48,36 @@ def content(request):
         # 가져오기
         sql = """
         SELECT
-            NO, TITLE, CONTENT, WRITER, 
-            HIT,TO_CHAR(REGDATE, 'YYYY-MM-DD HH:MI')
+            NO, TITLE, CONTENT, WRITER,
+            HIT,TO_CHAR(REGDATE, 'YYYY-MM-DD HH:MI'),IMG
         FROM
             BOARD_TABLE1
         WHERE
             NO = %s
         """
+        
         cursor.execute( sql, [no] )
+        # DB에서 정보를 불러와야 한다.   
         data = cursor.fetchone()
+        print(data)# 디비에서 받은 데이터 확인 
 
-        # DB에서 정보를 불러와야 한다.     
-        print(no)
-        # 무엇을 출력하는지 확인할것
-        return render( request, 'board/content.html', {"one":data} )
+        
+        # DB에 이미지가 있는 경우 
+        if data[6]: 
+            img = data[6].read()  # 바이트배열을 이미지에 넣는다 
+            img64 = b64encode(img).decode("utf-8")
+        # DB에 이미지가 없는 경우
+        else:
+            #print( os.path.join(BASE_DIR) )
+            file = open('./static/img/default.png' , 'rb')
+            img = file.read()
+            img64 = b64encode(img).decode("utf-8")
+
+        #print(no)
+        # 무엇을 출력하는지 확인할것 => 이미지 단계) 위에 선언하고 img를 dict에 담아 출력 
+        return render( request, 'board/content.html', {"one":data, "image":img64} )
     
+
 
 # list
 @csrf_exempt
