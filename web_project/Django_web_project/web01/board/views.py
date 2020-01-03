@@ -7,6 +7,8 @@ from django.http import HttpResponse
 # URL의 변화여부가 필요하다면 Redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
+
+
 # 렌더(render) 
 # index에서 인자값으로 request을 받았어 
 # 받았으니까 돌려줘야해 그때 render로 뭔가를 돌려주는데 
