@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 from base64 import b64encode
+import pandas as pd
 # byte 배열을 base64(이미지를 출력해주는 포멧)로 변경 
 import os
 # 렌더(render) 
@@ -15,6 +16,7 @@ import os
 # 받았으니까 돌려줘야해 그때 render로 뭔가를 돌려주는데 
 # 그게 html 페이지(위치값이랑 확장자명 빼먹지 말기 ) !!! 
 
+# 변수
 cursor = connection.cursor() #sql문 수행위한 cursor객체
 
 # Create your views here.
@@ -22,8 +24,22 @@ cursor = connection.cursor() #sql문 수행위한 cursor객체
 # 뷰의 함수는 먼저 쓴 것을 아래로 마지막에 작성한것은 위로 가도록 작성하자 
 
 
+# dataframe
+def dataframe(request):
+    if request.method == 'GET':
+        df = pd.read_sql(
+            """
+            SELECT NO, WRITER, HIT, REGDATE
+            FROM BOARD_TABLE1
+            """, con = connection)
+            # 판다스 때문에 선언한거  con = connection
+        # print(df)
+        print(df['NO'][:2])
+        print(type(df))
+        return render(request,'board/dataframe.html',{"df":df.to_html(classes="table")})
 
 
+# edit
 @csrf_exempt
 def edit(request):
     if request.method == 'GET':
@@ -51,7 +67,7 @@ def edit(request):
         return redirect("/board/content?no=" +no)
 
 
-
+# delete
 @csrf_exempt
 def delete(request):
     if request.method == 'GET':
@@ -64,6 +80,7 @@ def delete(request):
         """
         cursor.execute( sql, [no] )
         return redirect("/board/list")
+
 
 # content
 # http://127.0.0.1:8000/board/content?no=43
@@ -165,7 +182,7 @@ def list(request):
 
         return render( request, 'board/list.html', {"abc":data} )
      
-
+# write
 @csrf_exempt
 def write(request):
     if request.method == 'GET':
