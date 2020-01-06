@@ -30,16 +30,44 @@ cursor = connection.cursor() #sql문 수행위한 cursor객체
 @csrf_exempt 
 def t2_update_all(request):
     if request.method == 'GET':
-        n = request.session['no'] # 8, 5, 3
+        # 세션에서 받아줌 
+        n = request.session['no'] # n= [8, 5, 3]
         print(n)
+        # SELECT * FROM BOARD_TABLE2 WHERE NO=8 OR NO=5 OR NO=3
+        # SELECT * FROM BOARD_TABLE2 WHERE NO IN (8,5,3)
+        #
         rows = Table2.objects.filter(no__in = n)
-        return render(request, 'board/t2_update_all.html',{"list":rows})
+        return render(request, 'board/t2_update_all.html', {"list":rows})
         
     elif request.method == 'POST':
-        no = request.POST.getlist('chk[]')
-        request.session['no'] = no
-        #print(no)
-        return redirect("/board/t2_update_all")
+        menu = request.POST['menu']
+        if menu == '1':
+            no = request.POST.getlist('chk[]')
+            # 소멸 되기 때문에 세션으로 넘긴다.
+            request.session['no'] = no
+            print(no)
+            return redirect("/board/t2_update_all")
+
+        elif menu == '2':
+            no   = request.POST.getlist('no[]')
+            name = request.POST.getlist('name[]')
+            kor  = request.POST.getlist('kor[]')
+            eng  = request.POST.getlist('eng[]')
+            math = request.POST.getlist('math[]')
+
+            objs = []
+            for i in range(0, len(no), 1):
+                # 하나는 괜찮은데 => 작업 도중 작업이 끊어지면  
+                obj = Table2.objects.get(no=no[i])
+                obj.name = name[i]
+                obj.kor  = kor[i]
+                obj.eng  = eng[i]
+                obj.math = math[i]
+                objs.append(obj)
+
+            Table2.objects.bulk_update(objs,["name","kor","eng","math"])
+            return redirect("/board/t2_list")
+
 
 
 # t2_insert_all

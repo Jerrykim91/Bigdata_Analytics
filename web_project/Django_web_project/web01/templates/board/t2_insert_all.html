@@ -10,31 +10,33 @@
     <div class="container">
     <h3>tabel2_insert_all</h3>
         <hr/>
-        {% for i in cnt %}
+      
         <form action="/board/t2_insert_all" method="post">
-            <!--{% csrf_token %} post 있을때만 -->
+            {% csrf_token %}
+            <!--{% csrf_token %} 폼태그 안에 들어가면됨 _post 있을때만 -->
             <table class="table table-hover">
-                {% comment %} <tr>
+                {% for i in cnt %}
+                <tr>
                     <td><input type="text" placeholder="name" name = "name[]"/></td>
                     <td><input type="text" placeholder="kor"  name = "kor[]"/></td>
                     <td><input type="text" placeholder="eng"  name = "eng[]"/></td>
                     <td><input type="text" placeholder="math" name = "math[]"/></td>
-                    
-                </tr> {% endcomment %}
-                <tr>
+                </tr> 
+                {% comment %} <tr>
                     <td><input type="text" placeholder="name" value='name' name = "name[]"/></td>
                     <td><input type="text" placeholder="kor"  value='60' name = "kor[]"/></td>
                     <td><input type="text" placeholder="eng"  value='55' name = "eng[]"/></td>
                     <td><input type="text" placeholder="math" value='100' name = "math[]"/></td>
-                </tr>
+                </tr> {% endcomment %}
                 {% endfor %}
             </table>
             <input type="submit"  class="btn btn-success" value="추가"/>
             <a href="/board/t2_list" class="btn btn-success"> 리스트 </a>
         </form>
 
-        <p># 순서 <br/>
-        구조(틀) 짜고 -> 기능(method) 추가 -> 속성(val) 부여 
+        <p>
+        - 순서 <br/>
+         - 구조(틀) 짜고 -> 기능(method) 추가 -> 속성(val) 부여  <br/>
         </p>
         <!-- footer.html -->
          {% include "../main/footer.html" %}
