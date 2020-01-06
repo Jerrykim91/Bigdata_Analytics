@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+
+<body>
+<!-- nav.html -->
+    {% include "../main/nav.html" %}
+    <!-- t2_insert -->
+    <div class="container">
+    <h3>tabel2_insert</h3>
+        <hr/>
+        <form action="/board/t2_insert" method="post">
+            <table class="table table-hover">
+                <tr>
+                    <td><input type="text" placeholder="name" name = "name"/></td>
+                    <td><input type="text" placeholder="kor"  name = "kor"/></td>
+                    <td><input type="text" placeholder="eng"  name = "eng"/></td>
+                    <td><input type="text" placeholder="math" name = "math"/></td>
+                </tr>
+            </table>
+            <input type="submit"  class="btn btn-success" value="추가"/>
+            <a href="/board/t2_list" class="btn btn-success"> 리스트 </a>
+        </form>
+
+        <p># 순서 <br/>
+        구조(틀) 짜고 -> 기능(method) 추가 -> 속성(val) 부여 
+        </p>
+        {% include "../main/footer.html" %}
+    </div>
+</body>
+</html>

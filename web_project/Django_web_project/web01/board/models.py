@@ -2,7 +2,6 @@
 
 # Create your models here.
 
-
 from django.db import models
 
 class Table1(models.Model):
@@ -21,3 +20,13 @@ class Table1(models.Model):
 # $ python manage.py makemigrations board
 #  필수인가 ?
 # $ python manage.py migrate board
+
+class Table2(models.Model):
+    objects  = models.Manager() #vs code 오류 제거용
+
+    no      = models.AutoField(primary_key=True)
+    name    = models.CharField(max_length=30)
+    kor     = models.IntegerField()
+    eng     = models.IntegerField()
+    math    = models.IntegerField()
+    regdate = models.DateTimeField(auto_now_add=True)

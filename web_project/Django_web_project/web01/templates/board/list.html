@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="kr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
-</head>
+<!-- head.html -->
+{% include "../main/head.html" %}
 
 <body>
+<!-- nav.html -->
+    {% include "../main/nav.html" %}
     <div class="container">
         <div style="margin-top:10px; margin-bottom: 5px;">
         <h2>게시판 목록</h2>
@@ -43,6 +40,7 @@
             </tr>
             {% endfor %}
          </table>
+          {% include "../main/footer.html" %}
     </div>
 </body>
 </html>

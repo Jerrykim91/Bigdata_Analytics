@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit</title>
-</head>
+<!-- head.html -->
+{% include "../main/head.html" %}
+
 <body>
-    <form action = :"/member/edit" method="post">
-        ID  :<input type="text" name="id" value="{{one.0}}" readonly/>
-        NAME:<input type="text" name="name "value="{{one.2}}"/>
-        AGE :<input type="text" name="age" value="{{one.3}}"/>
-        <input type="submit" class="btn btn-warning" value="edit info"/>
-    </form>
+    <div class="container">
+    <!-- nav.html -->
+    {% include "../main/nav.html" %}
+        <form action = :"/member/edit" method="post">
+            ID  :<input type="text" name="id" value="{{one.0}}" readonly/>
+            NAME:<input type="text" name="name "value="{{one.2}}"/>
+            AGE :<input type="text" name="age" value="{{one.3}}"/>
+            <input type="submit" class="btn btn-warning" value="edit info"/>
+        </form>
+        <!-- footer.html -->
+    {% include "../main/footer.html" %}
+    </div>
 </body>
 </html>

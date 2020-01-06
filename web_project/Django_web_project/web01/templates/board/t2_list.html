@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+<!-- <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>t2_list</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+</head> -->
+{% include "../main/head.html" %}
+
+
+<!-- main body -->
+<body>
+    <!-- nav.html -->
+    {% include "../main/nav.html" %}
+    <div class="container">
+    <h2>Tabel2_List 목록</h2>
+    <form action="/board/t2_update_all" method="post">
+        <table class="table table-hover">
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>국어</th>
+                <th>영어</th>
+                <th>수학</th>
+                <th>등록일</th>
+                <th>삭제</th>
+                <th>수정</th>
+
+            </tr>
+            {% for one in list %}
+            <tr>
+                <td><input type="checkbox" name="chk[]" value="{{ one.no }}"/>
+                {{ one.no }}
+                </td>
+                <td>{{ one.name }}</td>
+                <td>{{ one.kor }}</td>
+                <td>{{ one.eng }}</td>
+                <td>{{ one.math }}</td>
+                <td>{{ one.regdate }}</td>
+
+                <td>
+                    <a href="/board/t2_delete?no={{ one.no }}">삭제</a>
+                </td>
+                <td>
+                    <a href="/board/t2_update?no={{ one.no }}">수정</a>
+                </td>
+            </tr>
+            {% endfor %}
+            
+        </table>
+        <hr />
+        <input class="btn btn-success" type="submit" value="일괄 수정">
+        <a href="/board/t2_insert" class="btn btn-success"> 등록 </a>
+        <a href="/board/t2_insert_all" class="btn btn-success"> 일괄 추가 </a>
+        </form>
+        
+        <hr />
+        <p>
+            - 모델에 있는 객체명으로 호출 해야한다. <br/>
+            - 반복문은 rows가 아니라 뷰에서 딕셔너리형태로 받아서 여기서 배포 
+            - 삭제랑 수정은 html 먼저 짜고 =>  함수를 생성 했음
+        </p>
+        <!-- footer.html -->
+        {% include "../main/footer.html" %}
+    </div>
+</body>
+</html>

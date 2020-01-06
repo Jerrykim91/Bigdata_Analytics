@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+<body>
+<!-- nav.html -->
+    {% include "../main/nav.html" %}
+    <!-- tabel2_update -->
+    <div class="container">
+    <h3>tabel2_update</h3>
+        <hr/>
+        <form action="/board/t2_update" method="post">
+            <table class="table table-hover">
+                <tr>
+                    <td><input type="hidden" value="{{ one.no }}" name = "no"/></td>
+                    <td><input type="text" placeholder="name"  value="{{ one.name }}" name = "name"/></td>
+                    <td><input type="text" placeholder="kor"   value="{{ one.kor }}"  name = "kor"/></td>
+                    <td><input type="text" placeholder="eng"   value="{{ one.eng }}"  name = "eng"/></td>
+                    <td><input type="text" placeholder="math"  value="{{ one.math }}"  name = "math"/></td>
+                </tr>
+            </table>
+            <input type="submit" class="btn btn-success" value="수정"/>
+            <a href="/board/t2_list" class="btn btn-success"> 리스트 </a>
+        </form>
+         {% include "../main/footer.html" %}
+    </div>
+</body>
+</html>
