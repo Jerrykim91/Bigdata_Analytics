@@ -106,7 +106,7 @@ def t2_update(request):
     if request.method == 'GET':
         n = request.GET.get("no",0)
         # SELECT * FROM BOARD_TABLE2 WHERE NO=%s
-        row = Table2.objects.get(no=n)
+        row = Table2.objects.get(no=n) # where # 열전체를 보낸다
         return render(request,'board/t2_update.html', {"one": row})
 
     elif request.method =='POST':
@@ -118,7 +118,7 @@ def t2_update(request):
         obj.kor  = request.POST['kor']
         obj.eng  = request.POST['eng']
         obj.math = request.POST['math']
-        obj.save() # 저장하기 수행 
+        obj.save() # 저장하기 수행  = 커킷
         # UPDATE BOARD_TABLE2 SET
         # NAME=%s, KOR=%s, ENG=%s, MATH=%s
         # WHERE NO= %s
@@ -131,12 +131,11 @@ def t2_delete(request):
         # 
         n = request.GET.get("no",0)
         # SQL = SELECT * FROM BOARD_TABEL2  WHERE NO=%s
-        row = Table2.objects.get(no=n)
+        row = Table2.objects.get(no=n) 
         row.delete() # 삭제
 
         return redirect("/board/t2_list")
 
-    
 
 # t2_list
 @csrf_exempt

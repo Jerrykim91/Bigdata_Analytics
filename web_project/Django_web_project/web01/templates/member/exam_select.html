@@ -1,0 +1,56 @@
+<!-- 기본 구조 => 헤더, 네비, 푸터 삽입   -->
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+
+<!-- main body -->
+<body>
+<!-- nav.html -->
+{% include "../main/nav.html" %}
+    <div class="container-md pt-5">
+    <h1>정보확인</h1>
+    <form action="/member/exam_update" method="post">
+        {% csrf_token %}
+        <input type="hidden" name='menu' value="1">
+            <table board = "1" class="table table-hover">
+                <tr>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>국어</th>
+                    <th>영어</th>
+                    <th>수학</th>
+                    <th>학반</th>
+                    <th>등록일</th>
+                </tr>
+                {% for one in list %}
+                <tr>
+                    <td><input type="checkbox" name="chk[]" value="{{ one.no }}"/>
+                    {{ one.no }}
+                    </td>
+                    <td>{{ one.name }}</td>
+                    <td>{{ one.kor }}</td>
+                    <td>{{ one.eng }}</td>
+                    <td>{{ one.math }}</td>
+                    <td>{{ one.classroom }}</td>
+                    <td>{{ one.regdate }}</td>
+
+                    <td>
+                        <a href="/member/exam_delete?no={{ one.no }}">삭제</a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+                
+            </table>
+            <hr />
+            <input class="btn btn-success" type="submit" value="일괄 수정">
+            <a href="/member/exam_insert" class="btn btn-success"> 등록 </a>
+
+            </form>
+    <!-- footer.html -->
+    {% include "../main/footer.html" %}
+    </div>
+</body>
+</html>

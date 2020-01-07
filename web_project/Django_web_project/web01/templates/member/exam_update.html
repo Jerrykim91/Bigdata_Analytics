@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+<body>
+<!-- nav.html -->
+    {% include "../main/nav.html" %}
+    <!-- tabel2_update -->
+    <div class="container-md pt-5">
+    <h3>tabel1_update</h3>
+        <hr/>
+        <form action="/member/exam_update" method="post">
+         {% csrf_token %}
+            <input type="hidden" name="menu" value = "2"/>
+            <table class="table table-hover">
+                <tr>
+                    <th>   </th>
+                    <th>이름</th>
+                    <th>국어</th>
+                    <th>영어</th>
+                    <th>수학</th>
+                    <th>학반</th>
+
+                </tr>
+                {% for one in list %}
+                <tr>
+                    <td><input type="hidden" value="{{ one.no }}" name = "no[]" readonly/></td>
+                    <td><input type="text" placeholder="name"  value="{{ one.name }}" name = "name[]"/></td>
+                    <td><input type="text" placeholder="kor"   value="{{ one.kor }}"  name = "kor[]"/></td>
+                    <td><input type="text" placeholder="eng"   value="{{ one.eng }}"  name = "eng[]"/></td>
+                    <td><input type="text" placeholder="math"  value="{{ one.math }}"  name = "math[]"/></td>
+                    <td><input type="text" placeholder="classroom"  value="{{ one.classroom }}"  name = "classroom[]"/></td>
+                </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" class="btn btn-success" value="수정"/>
+            <a href="/member/exam_select" class="btn btn-success"> 리스트 </a>
+        </form>
+         {% include "../main/footer.html" %}
+    </div>
+</body>
+</html>

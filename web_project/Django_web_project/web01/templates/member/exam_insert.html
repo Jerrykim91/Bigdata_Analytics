@@ -1,0 +1,38 @@
+<!-- 기본 구조 => 헤더, 네비, 푸터 삽입   -->
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+
+<!-- main body -->
+<body>
+<!-- nav.html -->
+{% include "../main/nav.html" %}
+    <div class="container-md pt-5">
+    <h1>정보입력</h1>
+            <form action="/member/exam_insert" method="post">
+            {% csrf_token %}
+            <!--{% csrf_token %} 폼태그 안에 들어가면됨 _post 있을때만 -->
+            <table class="table table-hover">
+                {% for i in cnt %}
+                <tr>
+                    <td><input type="text" placeholder="name"       name = "name[]"/></td>
+                    <td><input type="text" placeholder="kor"        name = "kor[]"/></td>
+                    <td><input type="text" placeholder="eng"        name = "eng[]"/></td>
+                    <td><input type="text" placeholder="math"       name = "math[]"/></td>
+                    <td><input type="text" placeholder="classroom"  name = "classroom[]"/></td>
+                </tr> 
+                {% endfor %}
+            </table>
+            <input type="submit"  class="btn btn-dark" value="추가"/>
+            <a href="/member/exam_select" class="btn btn-dark"> 리스트 </a>
+        </form>
+    <!-- footer.html -->
+    {% include "../main/footer.html" %}
+    <p> - 테이블로 구성 </p>>
+    </div>
+</body>
+</html>
+
+
