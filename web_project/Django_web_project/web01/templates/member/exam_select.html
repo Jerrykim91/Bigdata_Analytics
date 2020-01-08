@@ -11,46 +11,67 @@
 {% include "../main/nav.html" %}
     <div class="container-md pt-5">
     <h1>정보확인</h1>
-    <form action="/member/exam_update" method="post">
-        {% csrf_token %}
-        <input type="hidden" name='menu' value="1">
-            <table board = "1" class="table table-hover">
-                <tr>
-                    <th>번호</th>
-                    <th>이름</th>
-                    <th>국어</th>
-                    <th>영어</th>
-                    <th>수학</th>
-                    <th>학반</th>
-                    <th>등록일</th>
-                </tr>
-                {% for one in list %}
-                <tr>
-                    <td><input type="checkbox" name="chk[]" value="{{ one.no }}"/>
-                    {{ one.no }}
-                    </td>
-                    <td>{{ one.name }}</td>
-                    <td>{{ one.kor }}</td>
-                    <td>{{ one.eng }}</td>
-                    <td>{{ one.math }}</td>
-                    <td>{{ one.classroom }}</td>
-                    <td>{{ one.regdate }}</td>
+    <hr />
+        <form action="/member/exam_select" method="get"> 
+            <input type="text" name="txt"/>
+            <input type="submit" class="btn btn-success" value="검색"/>
+        </form>
+        <form action="/member/exam_update" class ="pt-2" method="post">
+            {% csrf_token %}
+            <input type="hidden" name='menu' value="1">
+                <table board = "1" class="table table-hover">
+                    <tr>
+                        <th>번호</th>
+                        <th>이름</th>
+                        <th>국어</th>
+                        <th>영어</th>
+                        <th>수학</th>
+                        <th>학반</th>
+                        <th>등록일</th>
+                    </tr>
+                    {% for one in list %}
+                    <tr>
+                        <td><input type="checkbox" name="chk[]" value="{{ one.no }}"/>
+                        {{ one.no }}
+                        </td>
+                        <td>{{ one.name }}</td>
+                        <td>{{ one.kor }}</td>
+                        <td>{{ one.eng }}</td>
+                        <td>{{ one.math }}</td>
+                        <td>{{ one.classroom }}</td>
+                        <td>{{ one.regdate }}</td>
 
-                    <td>
-                        <a href="/member/exam_delete?no={{ one.no }}">삭제</a>
-                    </td>
+                        <td>
+                            <a href="/member/exam_delete?no={{ one.no }}">삭제</a>
+                        </td>
 
-                </tr>
-                {% endfor %}
-                
-            </table>
+                    </tr>
+                    {% endfor %}
+                    
+                </table>
             <hr />
-            <input class="btn btn-success" type="submit" value="일괄 수정">
-            <a href="/member/exam_insert" class="btn btn-success"> 등록 </a>
+                {% for i in pages %}
+                <a href="/member/exam_select?page={{i}}&txt={{request.GET.txt}}">{{i}}</a>
+                {% endfor %}
+            <hr />
+                <input class="btn btn-success" type="submit" value="일괄 수정">
+                <a href="/member/exam_insert" class="btn btn-success"> 등록 </a>
+                <a href="/member/exam_select" class="btn btn-success"> 목록 </a>
 
-            </form>
+        </form>
+    <hr / >
+    <h5>>Memo<</h5>
+    <p>
+
+        상위 폼(검색에)get을 쓰는건 굳이 post를 할 필요 없어서<br/>
+        => post => 세션을 사용해야한다 <br/>
+        => 그래서 복잡해지고 굳이 검색창에 보안이라는 기능은 이쁜 쓰레기 <br/>
+        -> 검색을 누르면 공란일 경우 가장 처음으로 돌아간다. 
+            
+    </p>
     <!-- footer.html -->
     {% include "../main/footer.html" %}
+
     </div>
 </body>
 </html>

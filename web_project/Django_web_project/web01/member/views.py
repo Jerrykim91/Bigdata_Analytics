@@ -27,50 +27,51 @@ cursor = connection.cursor()
 # ex) 101 102 506 409
 
 # urls.py
-# exam_insert
+
+# exam_select
 @csrf_exempt
-def exam_insert(request):
-    # 니가 하는 일은 무엇이냐 => 성적을 입력 받는 일! 
+#  목차 
+def exam_select(request):
+    txt = request.GET.get("txt","")
+    page = int(request.GET.get("page",1))
+
+    if txt =="": # 검색어가 없는 경우 -1 
+        # SELECT * FROM MEMBER_TABLE1
+        list = Table1.objects.all()[page*10-10:page*10]
+        # page*10-10 : page*10
+        print('='*45)
+        print(page*10-10)
+        print(page*10)
+        print('='*45)
+
+        # SELECT COUNT(*) FROM MEMBER_TABLE1
+        cnt = Table1.objects.all().count()
+        # 페이지 수만 계산하기 위한 거
+        tot = (cnt-1)//10+1
+    else: # 검색어가 있는 경우 -2
+        # SELECT FROM MEMBER_TABLE1 WHERE NAME LIKE '%가%'
+        list = Table1.objects.filter(name__contains = txt)[page*10-10:page*10]
+
+        # SELECT COUNT(*) FROM MEMBER_TABLE1 WHERE NAME LIKE '%가%'
+        cnt = Table1.objects.filter(name__contains=txt).count()
+        tot = (cnt-1)//10+1
+
+    return render(request,'member/exam_select.html',{"list":list, "pages":range(1,tot+1,1)}) 
+# 반별 국영수 합계 
+
+
+
+# exam_delete
+@csrf_exempt
+# 삭제  => 확인 
+def exam_delete(request):
     if request.method == 'GET': 
-        return render(request,'member/exam_insert.html',{"cnt":range(10)}) 
-
-    elif request.method == 'POST':
-        name = request.POST.getlist('name[]')
-        kor  = request.POST.getlist('kor[]')
-        eng  = request.POST.getlist('eng[]')
-        math = request.POST.getlist('math[]')
-        classroom = request.POST.getlist('classroom[]')
-
-        # 객체를 5개를 넣는다는 개념 => 한번에 5개 받을수 있는 기능
-
-        objs = []
-        for i in range(0, len(name), 1):
-            obj = Table1()
-            obj.name      = name[i]
-            obj.kor       = kor[i]
-            obj.eng       = eng[i]
-            obj.math      = math[i]
-            obj.classroom = classroom[i]
-            objs.append(obj) 
-
-        # 일괄 추가 
-        Table1.objects.bulk_create(objs)
-        print(objs)
-
-        # # 객체를 불러와야지 
-        # obj = Table1()
-        # # 디비로부터 뭘 받아 오느냐 
-        # obj.name      = request.POST['name']
-        # obj.kor       = request.POST['kor']
-        # obj.eng       = request.POST['eng']
-        # obj.math      = request.POST['math']
-        # obj.classroom = request.POST['classroom']
-        # obj.save() 
+        n = request.GET.get("no",0)
+        row = Table1.objects.get(no=n)
+        row.delete() # 삭제
 
         return redirect("/member/exam_select")
-
-# 입력 받고 디비까지 올리는거    
-
+    
 
 # exam_update
 @csrf_exempt
@@ -118,31 +119,50 @@ def exam_update(request):
             Table1.objects.bulk_update( objs,["name","kor","eng","math", "classroom"])
             return redirect("/member/exam_select")
 
-# exam_delete
+
+# exam_insert
 @csrf_exempt
-# 삭제  => 확인 
-def exam_delete(request):
+def exam_insert(request):
+    # 니가 하는 일은 무엇이냐 => 성적을 입력 받는 일! 
     if request.method == 'GET': 
-        n = request.GET.get("no",0)
-        row = Table1.objects.get(no=n)
-        row.delete() # 삭제
+        return render(request,'member/exam_insert.html',{"cnt":range(10)}) 
+
+    elif request.method == 'POST':
+        name = request.POST.getlist('name[]')
+        kor  = request.POST.getlist('kor[]')
+        eng  = request.POST.getlist('eng[]')
+        math = request.POST.getlist('math[]')
+        classroom = request.POST.getlist('classroom[]')
+
+        # 객체를 5개를 넣는다는 개념 => 한번에 5개 받을수 있는 기능
+
+        objs = []
+        for i in range(0, len(name), 1):
+            obj = Table1()
+            obj.name      = name[i]
+            obj.kor       = kor[i]
+            obj.eng       = eng[i]
+            obj.math      = math[i]
+            obj.classroom = classroom[i]
+            objs.append(obj) 
+
+        # 일괄 추가 
+        Table1.objects.bulk_create(objs)
+        print(objs)
+
+        # # 객체를 불러와야지 
+        # obj = Table1()
+        # # 디비로부터 뭘 받아 오느냐 
+        # obj.name      = request.POST['name']
+        # obj.kor       = request.POST['kor']
+        # obj.eng       = request.POST['eng']
+        # obj.math      = request.POST['math']
+        # obj.classroom = request.POST['classroom']
+        # obj.save() 
 
         return redirect("/member/exam_select")
-    
 
-# exam_select
-@csrf_exempt
-#  목차 
-def exam_select(request):
-    if request.method == 'GET': 
-        # no = request.GET.get("no",0)
-        # 정보 출력 => insert 입력 받은 정보 
-        rows = Table1.objects.all()
-        print(rows)
-        return render(request,'member/exam_select.html',{"list":rows}) 
-# 반별 국영수 합계 
-
-
+# 입력 받고 디비까지 올리는거    
 
 # ===== 2020.01.07 ==== exam_select ==== 실습 ===== 
 
