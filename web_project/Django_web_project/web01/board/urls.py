@@ -13,6 +13,9 @@ from . import views
 # Board/views.py로 부터 => html을 생성 할때 마다 경로 생성 
 # path('urls이름', views.urls이름, name = 'urls이름')
 urlpatterns = [
+     
+     # 샘플 
+     path('list_m', views.list_m, name = 'list_m'),
 
      # 게시판 생성
      path('list', views.list, name = 'list'),

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="kr">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+<body>
+<!-- nav.html -->
+    {% comment %} {% include "../main/nav.html" %} {% endcomment %}
+    <div class="container-md pt-5">
+        {% comment %} <div style="margin-top:10px; margin-bottom: 5px;"> {% endcomment %}
+        <h2>게시판 목록</h2>
+      
+        
+        <div class='form-inline row justify-content-end' style="margin-top:8px; margin-bottom: 5px;">
+        <a href="/board/write"  class='btn btn-success m-1'>글쓰기</a>
+            <select class='form-control'>
+                <option>제목</option>
+                <option>내용</option>
+                <option>작성자</option>
+            </select>&nbsp;
+            <input type="text" class="form-control" placeholder="검색어" />&nbsp;
+            <input type="submit" class="btn btn-success" value="검색"/>
+        </div>
+        
+        <table class="table table-hover">
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>날짜</th>
+            </tr>
+            {% for one in list %}
+            <tr>
+                <td>{{ one.no }}</td> 
+                <td><a href="/board/content?no={{ one.no }}">{{one.title}}</a></td>
+                <td>{{ one.writer }}</td>
+                <td>{{ one.hit }}</td>
+                <td>{{ one.regdate }}</td>
+            </tr>
+            {% endfor %}
+         </table>
+        {% for i in pages %}
+        <a href="/board/list_m?page={{i}}">{{i}}</a>
+        {% endfor %}
+
+    {% comment %} {% include "../main/footer.html" %} {% endcomment %}
+    </div>
+</body>
+</html>
+

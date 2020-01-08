@@ -12,6 +12,7 @@ import pandas as pd
 import os
 # 모델을 불러 온다 => models.py 파일에서 table2 클래스를 불러옴 
 from .models import Table2
+from .models import Table1
 
 # 렌더(render) 
 # index에서 인자값으로 request을 받았어 
@@ -277,7 +278,7 @@ def content(request):
         WHERE
             NO = %s
         """
-        
+        # 이안에 들어가는 [no] 는 뭐냐 
         cursor.execute( sql, [no] )
         # DB에서 정보를 불러와야 한다.   
         data = cursor.fetchone()
@@ -301,10 +302,36 @@ def content(request):
         # 추가 )  => 글 번호 전후 출력문  
         return render( request, 'board/content.html', {"one":data, "image":img64 , "prev":prev[0] , "next":nxt[0] } )
     
-# list
+# list => 2020.01.08 추가
 @csrf_exempt
-def list(request):
+def list_m(request):
+    #if request.method =='GET':
+    # 일단 테이블 출력부터  => 전부 불러온다.
+        # rows = Table1.objects.all()
+        # 데이터 확인 
+        #print(rows)
+        # 페이지네이션 
+        # 타입에러 나서 page를 강제로 정수로 바꾸겠음 
+        page = int(request.GET.get("page",1))
+
+        # 목록을 page*10-10:page*10 단위로 분리한다.=> 이거는 페이지 넘버 만드는거
+        list = Table1.objects.all()[page*10-10:page*10]
+        # 확인 
+        print(page*10-10, page*10)
+        # 이제는 1페이지 안에 몇개나 담을건지를 정할거임 
+        cnt = Table1.objects.all().count() 
+        # cnt 전 테이블을 카운트하는데 row 단위로 카운트 
+        print(cnt)
+        #출력해보니까 24개 => 분해 왜 다시 페이지지 ? 왜 -1이지 ? 
+        pages = (cnt-1)//10+1
+        # pages => 넘기는게 아니라 =>range(1,page+1,1) 이렇게 넘겨야 한다 
+        return render( request, 'board/list_m.html', {"list":list,"pages":range(1,pages+1,1)})
+
+# list => 2020.01.08 추가
+@csrf_exempt
+def list(request):   
     if request.method == 'GET':
+        # 너는 뭘위한 세션이냐 
         request.session['hit'] = 1 # 세션에 hit = 1 
         sql = """
         SELECT
@@ -318,9 +345,9 @@ def list(request):
 
         data = cursor.fetchall()
         print(type(data))
-        print(data) #[(),()]
+        print(data) #[(),()] => 튜플 
 
-        return render( request, 'board/list.html', {"abc":data} )
+        return render( request, 'board/list.html', {"abc":data})
      
 # write
 @csrf_exempt
