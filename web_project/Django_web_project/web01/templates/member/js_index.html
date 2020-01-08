@@ -1,0 +1,48 @@
+<!-- 기본 구조 => 헤더, 네비, 푸터 삽입   -->
+<!DOCTYPE html>
+<html lang="en">
+<!-- head.html -->
+{% include "../main/head.html" %}
+
+
+<!-- main body -->
+<body>
+<!-- nav.html -->
+{% include "../main/nav.html" %}
+    <div class="container-md pt-5">
+
+    <h3> js_index </h3>
+    <form action="/member/insert" method="post" id="form">
+        <input type="text" name = "name" id="name"/>
+        <input type="submit" value="추가" />
+        <input type="submit" id ='btn_delete' value=" 삭제"/>
+    </form>
+
+
+    <hr/ >
+    <h4>>Memo<</h4>
+    <p>
+    - js_index 추가 => 스크립트 사용 실습 <br/>
+    - 이벤트, 기타등등의 작업은 화면 이후에 하기위해서 <br/>
+    - jquery 사용 => https://code.jquery.com/ => jQuery Core 3.4.1=> minified <br/>
+    - 스크립트=>  console.log('hello')=> 크롬안에 엔진에 로그가 찍힘 <br/>
+    - 화면 먼저 !! 스크립트는 마지막에 뜬다 <br/>
+    - function() 안에 들어가는 것들을 수행한다 => 액션 
+    </p>   
+    <!-- footer.html -->
+    {% include "../main/footer.html" %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script>
+            $(function(){
+                console.log('hello')
+                $('#name').val('jquery insert')
+
+                $('#btn_delete').click(function(){
+                    $('#form').attr('action','/member/delete')
+                })
+            })
+        </script>
+</body>
+</html>

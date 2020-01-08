@@ -22,12 +22,16 @@ cursor = connection.cursor()
 
 
 
-# 1. 테이블에 회원 20명을 추가하시오 
-# 
+
+
+# js_index => 스크립트(js) => 실습 
+def js_index(request):
+    if request.method == 'GET':
+        return render(request,'member/js_index.html')
+    
+
+# 문제. 테이블에 회원 20명을 추가하시오 
 # ex) 101 102 506 409
-
-# urls.py
-
 # exam_select
 @csrf_exempt
 #  목차 

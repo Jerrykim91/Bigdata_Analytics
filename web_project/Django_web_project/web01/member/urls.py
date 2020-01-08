@@ -15,6 +15,9 @@ from . import views
 
 urlpatterns = [
     
+    # 자바스크립트 추가
+    path('js_index', views.js_index, name = 'js_index'),
+
 
     # 성적 관리 시스템 
     path('exam_select', views.exam_select, name = 'exam_select'),
@@ -34,7 +37,6 @@ urlpatterns = [
 
     # 경로 생성 => 함수형 뷰를 호출 => member/views.py로 부터 
     # html을 생성 할때 마다 경로 생성 
-
     path('delete', views.delete, name = 'delete'),
     path('join1', views.join1, name = 'join1'),
     path('edit', views.edit, name = 'edit'),
@@ -43,5 +45,10 @@ urlpatterns = [
     path('login', views.login, name = 'login'),
     path('join' , views.join,  name = 'join'),
     path('index', views.index, name = 'index')
+
     
 ]
+
+
+
+
