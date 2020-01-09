@@ -19,11 +19,17 @@ import pandas as pd
 # 변수
 cursor = connection.cursor()
 
+
+
+
 # Create your views here.
 
 # graph
 def graph(request):
+    # aggregate : 원하는 필드의 합계, 평균, 최대, 최소 값을 구하는 등의 작업을 쉽게 함
+    # 문제는 필터링을 할 때 조건에 맞는 레코드가 없는 경우 SUM, MAX 등의 결과는 NONE값을 리턴 
 
+    # === 연습 ===
     # SELECT SUM(" kor ") FROM  MEMBER_TABEL1    
     sum_kor = Table1.objects.aggregate(Sum("kor"))
     print(sum_kor) #"kor__sum"
@@ -42,18 +48,50 @@ def graph(request):
     # > gt, >= gte,  < lt,   <= lte
     sum_kor = Table1.objects.filter(kor__gt=10).aggregate(sum1 =Sum("kor"))
     print(sum_kor)
+    # === 연습 ===
+
 
     # 반별 합계 
     # SELECT SUM("kor") sum1, SUM("eng") sum2, 
     #       SUM("math") sum3
     # FROM MEMBER_TABLE2
     # GROUP BY CLASSROOM
-    sum_kor = Table1.objects.values("classroom").annotate(sun=Sum("kor"),sum=Sum("eng"),sum=Sum("math"))
-    print(sum_kor)
-    print(sum_kor.query) # sql문 확인 
+    sum_kor = Table1.objects.values("classroom").annotate(sum1=Sum("kor"), sum2=Sum("eng"), sum3=Sum("math"))
+    sum_kor1 = Table1.objects.values("classroom").annotate(sum1=Sum("kor"))
 
-    df = pd.DataFrame(sum_kor)
+    
+    print(sum_kor)
+    print("="*20)
+    print("check point ===>")
+    print(type(sum_kor))
+    print("="*20)
+
+    # print("="*20)
+    # print(sum_kor.query) # sql문 확인 
+    # print(sum_kor1.query) # sql문 확인 
+    # print("="*20)
+    # 테스트 코드 pandas => 모델 확인용
+    # initialize list of lists 
+    # data1 = [['tom', 10], ['nick', 15], ['juli', 14]] 
+  
+    # # Create the pandas DataFrame 
+    # df1 = pd.DataFrame(data1, columns = ['Name', 'Age']) 
+    # print(df1)
+  
+    # 그래프 출력 
+    print("="*20)
+    # sum_kor = list(Table1.objects.all().values("no", "name", "kor"))[0:10] 
+    df = pd.DataFrame(sum_kor) # 에러 '데이터 프레임 타입에러' => 버전이 낮아서 생긴 문제 
+    print("="*20)
+    print("check point")
+    #print(df)
+    print("="*20)
+
+    df = df.set_index("classroom")
     print(df)
+    print(df.columns)
+    
+    # 바 형태로 출력
     df.plot(kind="bar")
 
     #  좌표설정 
@@ -66,20 +104,33 @@ def graph(request):
     # 폰트 적용 
     rc('font', family = font_name)
 
+    # 그래프 세팅  
     plt.bar(x,y)
     plt.title("AGES & PERSON")
     plt.xlabel("나이")
     plt.xlabel("숫자")
 
-    #plt.show() # 표시
-    plt.drow()  # 안보이게 그림을 캡쳐
-    img = io.BytesIo() # img에 byte 배열로 보관 
-    plt.savefig(img, format="png") # png 파일 포멧으로 저장
-    img_url = base64.b64encode(img.getvalue()).decode()
+    # #plt.show() # 표시
+    # plt.draw()  # 안보이게 그림을 캡쳐
+    # img = io.BytesIO() # img에 byte 배열로 보관 
+    # plt.savefig(img, format="png") # png 파일 포멧으로 저장
+    # #
+    # img_url = base64.b64encode(img.getvalue()).decode()
 
-    plt.close() # 그래프 종료 
-    return render(request, 'member/graph.html', {"graph1":'date:,base64,{}'.format(img_url)})
+    plt.draw()  # 안보이게 그림을 캡쳐
+    img = io.BytesIO() # img에 byte배열로 보관
+    plt.savefig(img, format="png" ) #png파일 포멧으로 저장
+    img_url = base64.b64encode(img.getvalue()).decode()    
+    #print(img_url)
+    # 구동안되 => 오타문제 
+    tmp = 'data:;base64,{}'.format(img_url)
+    #print(tmp)
+    # 그래프 종료 
+    plt.close() 
+    return render(request, 'member/graph.html', {"graph1":tmp})
     # <img src="{{graph1}}" />  <=  graph.html에서
+
+
 
 # dataframe
 def dataframe(request):
