@@ -10,22 +10,101 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate as auth1
 from django.contrib.auth import login as login1
 from django.contrib.auth import logout as logout1
-# 모델 불러오기 => 멤버의 성적 
-from .models import Table1
+# 모델 불러오기 
+from .models import Table1 
 # 추가모델 => 계산 
 from django.db.models import Sum, Max, Min, Count, Avg
+import pandas as pd
 
 # 변수
 cursor = connection.cursor()
 
 # Create your views here.
 
+# graph
+def graph(request):
+
+    # SELECT SUM(" kor ") FROM  MEMBER_TABEL1    
+    sum_kor = Table1.objects.aggregate(Sum("kor"))
+    print(sum_kor) #"kor__sum"
+
+    # SELECT SUM(" kor ") AS sum1 FROM MEMBER_TABEL1
+    sum_kor = Table1.objects.aggregate(sum1 = Sum("kor"))
+    print(sum_kor) #"sum1"
+
+    # SELECT SUM(" kor ") FROM MEMBER_TABLE1
+    # WHERE CLASSROOM=102
+    sum_kor = Table1.objects.filter(classroom='102').aggregate(sum1 = Sum("kor"))
+    print(sum_kor)
+
+    # SELECT SUM("kor") FROM MEMBER_TABLE2
+    # WHERE KOR > 10
+    # > gt, >= gte,  < lt,   <= lte
+    sum_kor = Table1.objects.filter(kor__gt=10).aggregate(sum1 =Sum("kor"))
+    print(sum_kor)
+
+    # 반별 합계 
+    # SELECT SUM("kor") sum1, SUM("eng") sum2, 
+    #       SUM("math") sum3
+    # FROM MEMBER_TABLE2
+    # GROUP BY CLASSROOM
+    sum_kor = Table1.objects.values("classroom").annotate(sun=Sum("kor"),sum=Sum("eng"),sum=Sum("math"))
+    print(sum_kor)
+    print(sum_kor.query) # sql문 확인 
+
+    df = pd.DataFrame(sum_kor)
+    print(df)
+    df.plot(kind="bar")
+
+    #  좌표설정 
+    x = ['kor','eng','math']
+    y = [ 45, 3, 4 ]
+
+    # 폰트 읽기 
+    font_name = font_manager.FontProperties(fname="c:/Windows/Fonts/malgun.ttf").get_name()
+
+    # 폰트 적용 
+    rc('font', family = font_name)
+
+    plt.bar(x,y)
+    plt.title("AGES & PERSON")
+    plt.xlabel("나이")
+    plt.xlabel("숫자")
+
+    #plt.show() # 표시
+    plt.drow()  # 안보이게 그림을 캡쳐
+    img = io.BytesIo() # img에 byte 배열로 보관 
+    plt.savefig(img, format="png") # png 파일 포멧으로 저장
+    img_url = base64.b64encode(img.getvalue()).decode()
+
+    plt.close() # 그래프 종료 
+    return render(request, 'member/graph.html', {"graph1":'date:,base64,{}'.format(img_url)})
+    # <img src="{{graph1}}" />  <=  graph.html에서
+
+# dataframe
+def dataframe(request):
+    # SELECT * FROM MEMBER_TABLE2
+    # rows = Table2.objects.all()
+
+    # 1. QuerySet -> list로 변경
+    # SELECT NO,NAME,KOR FROM MEMBER_TABLE2
+    rows = list(Table1.objects.all().values("no","name","kor"))[0:10]
+    print(rows)
+
+    # 2. list -> dataframe으로 변경
+    df = df.DataFrame(rows)
+    print(df)
+
+    # 3. dataframe => list
+    rows1 = df.values.tolist()
+
+    return render(request,'member/dataframe.html',{"df_table":df.to_html(), "list":rows})
+
 
 # js_chart(c3js) 차트 생성 실습
 def js_chart(request):
     #  if request.method == 'GET':
             return render(request,'member/js_chart.html')
-
 
 
 # js_index => 스크립트(js) => 실습 
@@ -38,13 +117,13 @@ def js_index(request):
 # ex) 101 102 506 409
 # exam_select
 @csrf_exempt
-#  목차 
+# 목차 
 def exam_select(request):
     txt = request.GET.get("txt","")
     page = int(request.GET.get("page",1))
 
     if txt =="": # 검색어가 없는 경우 -1 
-        # SELECT * FROM MEMBER_TABLE1
+        # SELECT * FROM MEMBER_TABLE1 (limit 0,10 : 범위 잡을때 mysql에서 => 오라클은 안됨  )
         list = Table1.objects.all()[page*10-10:page*10]
         # page*10-10 : page*10
         print('='*45)
@@ -63,7 +142,12 @@ def exam_select(request):
         # SELECT COUNT(*) FROM MEMBER_TABLE1 WHERE NAME LIKE '%가%'
         cnt = Table1.objects.filter(name__contains=txt).count()
         tot = (cnt-1)//10+1
-
+    print('===> 데이터 확인 ==== 1 ')
+    print(list)
+    print('===> 타입 확인 ======2 ')
+    print(type(list))
+    print('===> 데이터 확인 ======3 ')
+    print(range(1,tot+1,1))
     return render(request,'member/exam_select.html',{"list":list, "pages":range(1,tot+1,1)}) 
 # 반별 국영수 합계 
 
@@ -173,8 +257,6 @@ def exam_insert(request):
 # 입력 받고 디비까지 올리는거    
 
 # ===== 2020.01.07 ==== exam_select ==== 실습 ===== 
-
-
 
 # ==============================================
 
@@ -288,7 +370,6 @@ def auth_index(request):
 
 # ==== 2020.01.07=== auth member 추가 ==== 
 
-
 #join1 => 왜 만든거야 ? 
 @csrf_exempt #?
 def join1(request):
@@ -308,10 +389,12 @@ def list(request):
     #list변수에 data값을,  title변수에 "회원목록" 문자를
     return render(request, 'member/list.html', {"list":data, "title":"회원목록"})
 
+
 # index
 def index(request): # 함수형으로 생성
     #return HttpResponse("index page")
     return render(request, 'member/index.html') # 확장자 명 빼먹지 말기 
+
 
 # login
 @csrf_exempt
@@ -374,6 +457,7 @@ def edit(request):
 
 #id 기본키 => 중복안되게 설정 해두었음
 
+
 # logout
 @csrf_exempt
 def logout(request):
@@ -384,6 +468,7 @@ def logout(request):
         return render(request, '/member/index')
 
     #return redirect('/member/login')
+
 
 # delete
 @csrf_exempt
@@ -400,6 +485,7 @@ def delete(request):
         cursor.execute(sql,ar)
 
         return render(request, '/member/logout')
+
 
 @csrf_exempt # post로 값을 전달 받는 것은 필수 
 def join(request):
