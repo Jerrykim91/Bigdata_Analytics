@@ -305,28 +305,36 @@ def content(request):
 # list => 2020.01.08 추가
 @csrf_exempt
 def list_m(request):
-    #if request.method =='GET':
-    # 일단 테이블 출력부터  => 전부 불러온다.
-        # rows = Table1.objects.all()
-        # 데이터 확인 
-        #print(rows)
-        # 페이지네이션 
-        # 타입에러 나서 page를 강제로 정수로 바꾸겠음 
-        page = int(request.GET.get("page",1))
-
-        # 목록을 page*10-10:page*10 단위로 분리한다.=> 이거는 페이지 넘버 만드는거
+    # 네이밍 + 써칭
+    page = int(request.GET.get("page",1)) # 정수로 안치면 에러남 
+    # "" == None ?  
+    txt  = request.GET.get("txt","")
+    # 1. 만약에 검색어가 없는 경우 
+    
+    if txt == "" :
         list = Table1.objects.all()[page*10-10:page*10]
-        # 확인 
-        print(page*10-10, page*10)
-        # 이제는 1페이지 안에 몇개나 담을건지를 정할거임 
         cnt = Table1.objects.all().count() 
-        # cnt 전 테이블을 카운트하는데 row 단위로 카운트 
         print(cnt)
-        #출력해보니까 24개 => 분해 왜 다시 페이지지 ? 왜 -1이지 ? 
-        pages = (cnt-1)//10+1
-        # pages => 넘기는게 아니라 =>range(1,page+1,1) 이렇게 넘겨야 한다 
-        return render( request, 'board/list_m.html', {"list":list,"pages":range(1,pages+1,1)})
+        tot = (cnt-1)//10+1
+    # 2. 만약 검색어가 존재하는 경우 
+    else: # filter() => 뭔지 알아보기 
+        # 걸러내서 이름에 맞는 컨텐츠를 불러오기 
+        list = Table1.objects.filter(name__contains=txt)[page*10-10:page*10]
+        # 불러온 이름에 맞는 컨텐츠의 개수를 센다 
+        cnt = Table1.objects.filter(name__contains=txt).count()
+        tot = (cnt-1)//10+1
+    # 3개를 보내주면 3개를 써야지 
+    return render( request, 'board/list_m.html', {"list":list,"txt":txt,"pages":range(1,tot+1,1)})
 
+
+    # - 네이밍을 했고 
+    # - 리스트에서 검색하는거 => 구현 
+    # - 만약에 빈거면 페이지 네이션만하고 
+    # - 비어있지 않으면 페이지 네이션을 포함해서 진행하는데 
+    # - 검색어에 작성한 항목이 있는 아이들만 골라서 출력해야한다. 
+
+    # => html 수정하기 
+    
 # list => 2020.01.08 추가
 @csrf_exempt
 def list(request):   

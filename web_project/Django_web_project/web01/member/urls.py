@@ -14,10 +14,18 @@ from . import views
 # http://127.0.0.1:8000/member/login
 
 urlpatterns = [
-    
+
+    # 그래프 추가
+    path('graph', views.graph, name = 'graph'),
+
+    # dataframe 파트 추가 
+    path('dataframe', views.dataframe, name = 'dataframe'),
+
+    # c3js 실습
+    path('js_chart', views.js_chart, name = 'js_chart'),
+
     # 자바스크립트 추가
     path('js_index', views.js_index, name = 'js_index'),
-
 
     # 성적 관리 시스템 
     path('exam_select', views.exam_select, name = 'exam_select'),
@@ -26,7 +34,7 @@ urlpatterns = [
     path('exam_insert', views.exam_insert, name = 'exam_insert'),
 
 
-    # auth_member (내장 디비 사용 )
+    # auth_member (내장 디비 사용)
     path('auth_pw', views.auth_pw, name = 'auth_pw'),
     path('auth_edit', views.auth_edit, name = 'auth_edit'),
     path('auth_logout', views.auth_logout, name = 'auth_logout'),

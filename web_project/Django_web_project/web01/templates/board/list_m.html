@@ -40,12 +40,27 @@
             </tr>
             {% endfor %}
          </table>
-        {% for i in pages %}
+        {% comment %} {% for i in pages %}
         <a href="/board/list_m?page={{i}}">{{i}}</a>
-        {% endfor %}
+        {% endfor %} {% endcomment %}
 
-    {% comment %} {% include "../main/footer.html" %} {% endcomment %}
-    </div>
-</body>
+    <div class="container">
+
+        <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            </li>
+            {% for i in pages %}
+            <li class="page-item"><a class="page-link" href="/board/list_m?page={{i}}">{{i}}</a></li>
+            {% endfor %}
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </boby>
 </html>
 

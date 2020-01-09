@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate as auth1
 from django.contrib.auth import login as login1
 from django.contrib.auth import logout as logout1
-# 모델 불러오기 
+# 모델 불러오기 => 멤버의 성적 
 from .models import Table1
 # 추가모델 => 계산 
 from django.db.models import Sum, Max, Min, Count, Avg
@@ -21,6 +21,10 @@ cursor = connection.cursor()
 # Create your views here.
 
 
+# js_chart(c3js) 차트 생성 실습
+def js_chart(request):
+    #  if request.method == 'GET':
+            return render(request,'member/js_chart.html')
 
 
 
