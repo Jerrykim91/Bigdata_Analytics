@@ -9,9 +9,13 @@ table = db.get_collection("table1") # collection 생성
 dict1 = {"id":"a","age":35}
 
 
-table.insert_one(dict1) # 추가하기
+#table.insert_one(dict1) # 추가하기
 
-
-print(conn)
+data1 = table.find()
+for tmp in data1 :
+    print(tmp)
+    print(type(tmp))
+conn.close()
+# print(conn)
 
 # 수행할때 마다 테이블이 생성되는 이유는 몽고디비에서 자동으로 기본키를 생성 
