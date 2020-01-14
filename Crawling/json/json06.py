@@ -24,8 +24,7 @@ dailyBoxOfficeList{
     4. salesAcc,
     5. scrnCnt,
     6. showCnt
-    }
-출력 !! 
+    } 출력 !! 
 """
 
 print('-'*40)
@@ -46,7 +45,6 @@ data1 = json.loads(str1)['boxOfficeResult']['dailyBoxOfficeList']
 # 타입 출력 해보기 
 # print(data)
 print(type(data)) # dict로 바뀐거 확인 
-r
 
 # 일단 for 문 돌려보자 
 for tmp in data1 :
