@@ -3,25 +3,29 @@
 
 # import 
 # 뭐뭐 인포트 해야하나 
-import requests as rq
+import requests 
 import pymongo 
 import json
 
 # 몽고디비에 접속 
 conn = pymongo.MongoClient('192.168.99.100',32766)
+
 # 디비 생성
 db = conn.get_database("db1")
+
 # 테이블 생성 => 컬렉션 생성 
 table = db.get_collection("exam10") 
 
 print('-'*20,'start point','-'*20)
 
 # url 불러오기 = json 경로 변수에 담기  
-url = "http://ihongss.com/json/exam10.json"
+url  = "http://ihongss.com/json/exam10.json"
+
 # 텍스트 형의 json을 sty1에 담는다 
-str1 =rq.get(url).text
+str1  = requests.get(url).text
+
 # 타입 변경(str -> dict)
-data = json.loads(str1)
+data  = json.loads(str1)
 data1 = json.loads(str1)['data']
 
 # 타입 출력 해보기 
@@ -41,7 +45,7 @@ data1 = json.loads(str1)['data']
 # 일단 for문 돌려보자 
 for tmp in data1:
     # print('-'*20,'Checkpoint1','-'*20)
-    # print(tmp)
+    print(tmp)
     # print(tmp['id'])
     # print(type(tmp['id']))
     # print(tmp['name'])
@@ -51,14 +55,14 @@ for tmp in data1:
     # print(tmp['score']['math'])
     # print('-'*20,'Checkpoint2','-'*20)
 
-    dict1 = dict()
-    dict1['id']   = tmp['id']
-    dict1['name'] = tmp['name']
-    dict1['math'] = tmp['score']['math']
-    dict1['eng']  = tmp['score']['eng']
-    dict1['kor']  = tmp['score']['kor']
+    # dict1 = dict()
+    # dict1['id']   = tmp['id']
+    # dict1['name'] = tmp['name']
+    # dict1['math'] = tmp['score']['math']
+    # dict1['eng']  = tmp['score']['eng']
+    # dict1['kor']  = tmp['score']['kor']
 
-    table.insert_one(dict1)
+    # table.insert_one(dict1)
 
 print('done')
 

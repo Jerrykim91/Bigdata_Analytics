@@ -4,7 +4,7 @@
 
 # import 
 # 뭐뭐 인포트 해야하나 
-import requests as rq
+import requests 
 import pymongo 
 import json
 
@@ -34,23 +34,43 @@ print('-'*40)
 
 # url 불러오기 
 url = "http://ihongss.com/json/exam21.json"
-str1 =rq.get(url).text
+str1 = requests.get(url).text
 # 타입 변경(str -> dict)
 data = json.loads(str1)
 # ['boxOfficeResult']['dailyBoxOfficeList']
+# 내가 원하는 데이터는 showRange 데이터 값을 출력 
+# dailyBoxOfficeList 안의 데이터를 출력 
 data1 = json.loads(str1)['boxOfficeResult']['dailyBoxOfficeList']  
 
 
 # 타입 출력 해보기 
 # print(data)
 print(type(data)) # dict로 바뀐거 확인 
-print('-'*20,'Checkpoint2','-'*20)
-
+r
 
 # 일단 for 문 돌려보자 
-for tmp in data['boxOfficeResult'] :
+for tmp in data1 :
     # print(tmp['showRange'])
     # print(tmp['dailyBoxOfficeList'])
-    print(tmp[boxofficeType])
-    # print(tmp[])
-    # print(tmp[])
+    # print(tmp['boxofficeType'])
+    print('-'*20,'Checkpoint3','-'*20)
+    # dict1 = dict()
+    # dict1[] = tmp[]
+    # print(tmp)
+    print(tmp['rankOldAndNew'])
+    print(tmp['movieNm'])
+    print(tmp['salesShare'])
+    print(tmp['salesAcc'])
+    print(tmp['scrnCnt'])
+    print(tmp['showCnt'])
+
+
+
+
+
+    # 1. rankOldAndNew,
+    # 2. movieNm,
+    # 3. salesShare,
+    # 4. salesAcc,
+    # 5. scrnCnt,
+    # 6. showCnt
