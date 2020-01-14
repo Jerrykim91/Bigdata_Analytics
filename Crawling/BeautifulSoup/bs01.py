@@ -3,6 +3,8 @@
 from bs4 import BeautifulSoup
 
 with open('./resources/exam01.html',encoding="utf-8") as fp :
+    # 복잡한 HTML 문서를 복잡한 Python 객체 트리로 변환
+    # fp = url 같은 개념
     soup = BeautifulSoup(fp, 'html.parser')
 
     # div 태그 전체 찾기 
