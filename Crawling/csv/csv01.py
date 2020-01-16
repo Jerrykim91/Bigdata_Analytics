@@ -1,4 +1,4 @@
-# csv01.py
+# csv01.py => 확인 
 import pymongo, csv 
 
 conn  = pymongo.MongoClient('192.168.99.100',32766)
