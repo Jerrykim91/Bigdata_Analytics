@@ -1,14 +1,6 @@
 # Crawling
 ---
-### 2020.01.14
 
----
-### 2020.01.13
-실습 1 - http://ihongss.com/json/exam2.json     
-실습 2 - http://ihongss.com/json/exam3.json     
-실습 3 - http://ihongss.com/json/exam3.json    
-실습 4 - http://ihongss.com/json/exam4.json    
----
 <순서>
 # 도커 설치 - 1
 ```bash
