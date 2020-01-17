@@ -4,10 +4,10 @@
 
 ```py
 
-# <a href="#", id="aaa">가나다</a>
+#  { href="#", id="aaa"}
 # <span abc ="1">가나다></span>
 
-print(tmp.find('span').text)  # 클래스 안에 있는 text를 출력 
+print(tmp.find('a').text)  # 클래스 안에 있는 text를 출력 
 print(tmp.find('span').attrs) # 클래스 안에 있는 속성을 출력 
 
 ```
@@ -19,7 +19,7 @@ print(tmp.find('span').attrs) # 클래스 안에 있는 속성을 출력
 # json 경로 변수에 담기  
 url = "http://ihongss.com/json/exam2.json"
 # requests.get(url).text
-str1 = requests.get(url).text
+str1 = requests.get(url).text # 택스트로 변경 
 # 타입 변경 
 # 파일에서 가져오는거 load, 여기서는 loads
 data1 = json.loads(str1) # str -> dict
@@ -50,7 +50,7 @@ find_element_by_  # 한개 요소
 find_elements_by_ # 여러개 요소 
 
 # 스크립트 제어 
-# 키보드, 마우스, 화면 제어 가능 
+# 키보드, 마우스제어
 # 내용을 지우는 것, 제거하는것은 안됨 
 
 # a = {"ret": {"bbb" : [13,45]}}
