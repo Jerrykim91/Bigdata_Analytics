@@ -8,6 +8,10 @@
 - REPOSITORY 안에 eda
 - 어떤 이미지를 가지고 어떤 컨테이너를 만드느냐  
 
+###  파이썬 경로 찾기 
+cmd 에서 
+```where python```
+
 # 커밋으 수시로 해줘야한다 
 
 
@@ -24,7 +28,10 @@
 $ docker commit eda 나의도커아이디/eda
 
 ```
-
+# 도커로 복사 
+```
+$ docker cp ./b.py eda:/home/vscode/notebooks/
+```
 
 ---
 ## 강사님 자료 
@@ -110,8 +117,19 @@ $ docker rm 컨테이너아이디
 $ docker rmi 이미지아이디
 
 ```
+```bash
 
 
+# 이동
+$ cd ..
+$ cd ..
+$ dir 
+$ pwd
+$ cd c 
+$ pwd
+$ cd Bigdata_Analytics/
+$ cd Pandas/
+```
 ---
 
 # 궁금한거 
