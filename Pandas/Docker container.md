@@ -75,15 +75,15 @@ $ docker run --rm --name eda -itd -u vscode -p 8888:8888 -p 8088:8088 -p 6006-60
 
 docker run --rm --name eda -itd -u vscode -p 8888:8888 -p 8088:8088 -p 6006-6015:6006-6015 -e JUPYTER_RUN=yes sun4131/eda
 
+# 내 도커에 커밋
+$ docker commit eda sun4131/eda
+
 # 내가 commit한 이미지를 나의 도커 허브에 push 할때
 $ docker push 나의도커아이디/eda
 $ docker push sun4131/eda
 
-# 내 도커에 커밋
-$ docker commit eda sun4131/eda
-
-
 ```
+
 
 ---
 ### token 알아내서 => 실행한 웹에 토큰 추가 
@@ -104,7 +104,6 @@ Password: 비밀번호
 ---
 ### 도커 컨테이너, 이미지 정리 하기
 ```bash
-
 # 1. 도커 컨테이너 확인
 $ docker ps -a
 # 2. 사용않하는 컨테이너 커밋
@@ -114,12 +113,12 @@ $ docker push 도커아이디/이미지이름
 # 4. 사용 않하는 컨테이너 삭제
 $ docker rm 컨테이너아이디
 # 5. 사용 않하는 이미지 삭제
-$ docker rmi 이미지아이디
+$ docker rm 이미지아이디
 
 ```
+
+
 ```bash
-
-
 # 이동
 $ cd ..
 $ cd ..
@@ -131,6 +130,9 @@ $ cd Bigdata_Analytics/
 $ cd Pandas/
 ```
 ---
+
+
+
 
 # 궁금한거 
 - 파워쉘은 뭐야 
