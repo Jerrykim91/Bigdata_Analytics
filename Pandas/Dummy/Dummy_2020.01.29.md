@@ -48,3 +48,7 @@ Archive:  data.zip
 vscode@5a1fd431ee16:~/notebooks/data$ 
 
 ```
+
+
+https://kaggle-kr.tistory.com/17?category=868316
+https://www.kaggle.com/joshuajhchoi/titanic-tutorial-for-absolute-beginners-kr-en
