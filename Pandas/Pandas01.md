@@ -68,3 +68,8 @@ country	continent	year	lifeExp	pop	gdpPercap
 
 # 전처리 
 - 이상치 결측치를 수시로 확인 
+
+
+# enumerate
+
+# 게볼루션 
