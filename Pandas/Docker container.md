@@ -73,7 +73,7 @@ $ docker run --rm --name eda -itd -u vscode -p 8888:8888 -p 8088:8088 -p 6006-60
 
 $ docker run --rm --name eda -itd -u vscode -p 8888:8888 -p 8088:8088 -p 6006-6015:6006-6015 -e JUPYTER_RUN=yes 계정id/이미지 이름 
 
-docker run --rm --name eda -itd -u vscode -p 8888:8888 -p 8088:8088 -p 6006-6015:6006-6015 -e JUPYTER_RUN=yes sun4131/eda
+docker run --rm --name eda -itd -u vscode -p 8888-8889:8888-8889  -p 6006-6015:6006-6015 -e JUPYTER_RUN=yes sun4131/eda
 
 # 내 도커에 커밋
 $ docker commit eda sun4131/eda
