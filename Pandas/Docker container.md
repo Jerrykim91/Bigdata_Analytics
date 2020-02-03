@@ -37,6 +37,9 @@ $ docker cp ./b.py eda:/home/vscode/notebooks/
 ## 강사님 자료 
 
 ```bash
+# 도커 풀 이미지 가지고 오기 
+$ docker pull mrsono0/base_project:eda
+# docker pull mrsono0/base_project:eda
 
 # 이미지를 가지고 오그 그이미지를 기반으로 컨테이너 생성 
 #도커 허브에 있는 이미지로 컨테이너 런 (최초 실행시) = > 강사님 도커 컨테이너 
@@ -54,6 +57,9 @@ $ docker pull 이미지 이름
 
 # 도커 컨테이너 생성 =>  강사님 만든 도커 실행 
 $ docker run --rm --name eda -itd -u vscode -p 8888:8888 -p 8088:8088 -p 6006-6015:6006-6015 -e JUPYTER_RUN=yes -v /C/Bigdata_Analytics/Pandas/eda:/home/vscode/notebooks/eda mrsono0/base_project:eda
+
+# 푸쉬 => 이미지 저장 
+$ docker push 나의도커아이디/eda
 
 
 # 컨테이너 접속 로그 확인 
@@ -84,6 +90,8 @@ $ docker push 나의도커아이디/eda
 $ docker push sun4131/eda
 
 ```
+### 이름 바꾸기 
+```docker tag```
 
 
 ---
