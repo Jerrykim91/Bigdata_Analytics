@@ -55,7 +55,7 @@ country	continent	year	lifeExp	pop	gdpPercap
 
 ### loc , iloc속성을 자유자재로 사용 
 - 추출할 데이터의 행과 열을 지정하는 방법을 알아야 함
-- 두 속성 모두 추출할 데이터의 행을 먼저 지정한후 열을 지정
+- 두 속성 모두 추출할 데이터의 행을 먼저 지정한 후 열을 지정
 ```df.[[행],[열]]이나 df.iloc[[행],[열]]```
 
 # type, dtype 차이
