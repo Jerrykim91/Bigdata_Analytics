@@ -5,59 +5,38 @@
 <<주요 공부 과목 >>
 
 ## 1. 빅데이터 분석 기본 (160시간 ~ )     
-    **- python programming ( 2019.12.16 ~ 종료 2019.12.26)**     
+- Python programming ( 2019.12.16 ~ 종료 2019.12.26)
+- Python web programming_Flask and Django(2019.12.26 ~ 종료)
+    - 도커(Docker) 
+        - 오라클C12 다운로드 
 
----
-01. 파이썬 문법 전체 리스트 
-02. 수치형 
-03. 문자형 
-04. 연속데이터타입\\_리스트\\_딕셔너리\\_튜플\_집합
-    - Python_Basic_P000_01.ipynb [이동](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects/Python_Basic_p00/Python_Basic_P000_01.ipynb)
----
-05. 블린\\_조건문\\_제어문\\_반복문 
-    - Python_Basic_P000_02.ipynb [이동](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects/Python_Basic_p00/Python_Basic_P000_02.ipynb)
----
----
-06. 함수
-    - Python_Basic_P000_03.ipynb [이동](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects/Python_Basic_p00/Python_Basic_P000_03.ipynb)
----
----
-07. 모듈화 모듈가져오기& 패키지 예외처리
-    - Python_Basic_P000_04.ipynb [이동](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects/Python_Basic_p00/Python_Basic_P000_04.ipynb)
----
----
-08. 클래스\_객체지향 프로그램   
-    - Python_Basic_P000_05.ipynb [이동](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects/Python_Basic_p00/Python_Basic_P000_05.ipynb)
----
----
-09. 정규식
-    - 메타 문자    
-10. 고급표현
-    - 클로저 
-    - 데코레이터
-    - Python_Basic_P000_06.ipynb [이동](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects/Python_Basic_p00/Python_Basic_P000_06.ipynb)
----
+    - Python Flask 
+        - 프로젝트 생성 
+            - 기본 base 구현 + DB 연결
 
-**-파이썬 웹 프로그래밍(2019.12.26 ~ 종료)**
+    - Python Django
+        - 프로젝트 생성 + DB 연결
+            - 어플리케이션 생성
+                - 회원
+                    - 일반
+                    - Auth
+                - 게시판
+                    - 모델 DB에서
+                    - 모델 장고에서 다이렉트로
+- 미니프로젝트_1 
+     - GDP를 이용한 데이터 시각화 및 제이슨 배보(완료)
 
-- 도커 
-    - 오라클C12 다운로드 
+- Pandas
+    - 탐색 기반 데이터 분석 
+        - Pandas
+        - CCTV
+        - 평당가격
+    - 통계기반 데이터 분석 기법 
+        -
+        -
+- 미니프로젝트_2
 
-- Python Flask 
-    - 프로젝트 생성 
-        - 기본 base 구현 + DB 연결
-    
-- Python Django
-    - 프로젝트 생성 + DB 연결
-        - 어플리케이션 생성
-            - 회원
-                - 
-            -게시판
-                - 
-
-
-- 탐색 기반 데이터 분석 
-- 통계기반 데이터 분석 기법 
+> ADSP 시험 2월 29일 
 
 2. 해양/금융/영화/ 공공 분석 고급(240시간: )
     - 빅데이터 분산 저장 처리 환경 구축 
@@ -70,12 +49,12 @@
 
 4. 미니프로젝트(일주일_단위)
     1) 웹서비스 구축
-        - 
+        - GDP를 이용한 데이터 시각화 및 제이슨 배보
     2) 빅데이터 분석 활용
-        -
+        - 미정
 
 5. 파이널 프로젝트(1달 과정)
-    - 
+    - 미정
 
 6. 인사이트 특강 
     - 빅데이터 트렌드 
