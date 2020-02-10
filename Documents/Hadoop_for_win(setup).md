@@ -76,6 +76,7 @@ $ set   #  all path can check
 
 
 ## 하둡에서 직접적으로 경로 설정 
+
 ### 1. hadoop-env.cmd
 C:\Bigdata\hadoop-3.1.2\etc\hadoop\hadoop-env.cmd => VSCode에서 실행 
 
@@ -153,6 +154,7 @@ set PATH = %PATH%;%HADOOP_PREFIX%\bin;  %HADOOP_PREFIX%\sbin
 
 
 ```
+---
 ### 2. core-site.xml 열어서 
 C:\Bigdata\hadoop-3.1.2\etc\hadoop\core-site.xml => VSCode에서 실행 
 
@@ -171,12 +173,11 @@ C:\Bigdata\hadoop-3.1.2\etc\hadoop\core-site.xml => VSCode에서 실행
 </configuration>
 
 ```
-
+---
 ### 3. hdfs-site.xml 열기 
 C:\Bigdata\hadoop-3.1.2\etc\hadoop\ hdfs-site.xml  => VSCode에서 실행 
 
 ```xml
-
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
@@ -197,9 +198,8 @@ C:\Bigdata\hadoop-3.1.2\etc\hadoop\ hdfs-site.xml  => VSCode에서 실행
 <value>/C:/Bigdata/hadoop-3.1.2/datanode</value>
 </property>
 </configuration>
-
-
 ```
+---
 
 ### 4. 새 폴더 만들기 
 이 경로(C:\Bigdata\hadoop-3.1.2)에 새 폴더 생성
@@ -219,6 +219,27 @@ From source with checksum 64b8bdd4ca6e77cce75a93eb09ab2a9
 This command was run using /C:/Bigdata/hadoop-3.1.2/share/hadoop/common/hadoop-common-3.1.2.jar
 
 ``` 
+---
+### 6.mapred-site.xml 열기 
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\ mapred-site.xml => VSCode에서 실행 
+
+```xml
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <property>
+  <name>mapreduce.framework.name</name>
+  <value>yarn</value>
+  </property>
+  <property>
+  <name>mapred.job.tracker</name>
+  <value>0.0.0.0:9001</value>
+  </property>
+</configuration>
+
+```
+---
+
 ## 하둡 설정 파일 
 
 |설정파일|설명|
