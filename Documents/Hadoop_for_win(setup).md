@@ -181,22 +181,22 @@ C:\Bigdata\hadoop-3.1.2\etc\hadoop\ hdfs-site.xml  => VSCode에서 실행
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-<property>
-<name>dfs.replication</name>
-<value>1</value>
-</property>
-<property>
-<name>dfs.permissions</name>
-<value>false</value>
-</property>
-<property>
-<name>dfs.namenode.name.dir</name>
-<value>/C:/Bigdata/hadoop-3.1.2/namenode</value>
-</property>
-<property>
-<name>dfs.datanode.data.dir</name>
-<value>/C:/Bigdata/hadoop-3.1.2/datanode</value>
-</property>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+    <property>
+        <name>dfs.permissions</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/C:/Bigdata/hadoop-3.1.2/namenode</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/C:/Bigdata/hadoop-3.1.2/datanode</value>
+    </property>
 </configuration>
 ```
 ---
@@ -239,7 +239,39 @@ C:\Bigdata\hadoop-3.1.2\etc\hadoop\ mapred-site.xml => VSCode에서 실행
 
 ```
 ---
+### 7.yarn-site.xml 열기 
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\yarn-site.xml => VSCode에서 실행 
 
+```xml
+<configuration>
+
+<!-- Site specific YARN configuration properties -->
+
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+  </property>
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.pmem-check-enabled</name>
+    <value>false</value>
+  </property>
+  <property>
+    <name>yarn.nodemanager.vmem-check-enabled</name>
+    <value>false</value>
+  </property>
+
+</configuration>
+
+```
+---
 ## 하둡 설정 파일 
 
 |설정파일|설명|
@@ -250,6 +282,4 @@ C:\Bigdata\hadoop-3.1.2\etc\hadoop\ mapred-site.xml => VSCode에서 실행
 |conf/core-site.xml|하둡 분산 파일 시스템과 하둡 맵리듀스 모두에 적용할 수 있는 스크립트|
 |conf/hdfs-site.xml|하둡 분산 파일 시스템 설정 스크립트|
 |conf/mapred-site.xml|하둡 맵리듀스 설정 스크립트|
-
-
 ---
