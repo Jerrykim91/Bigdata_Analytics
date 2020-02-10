@@ -4,6 +4,7 @@
 
 
 # Hadoop for Windows Version set it up
+## 하둡 클러스터 구축을 위한 설정 
 ---
 ## 다운로드 
 ```
@@ -47,9 +48,177 @@ $ java -version
     - hadoop-3.1.2.tar 압축을 풀어 생긴 hadoop-3.1.2 열고 bin 폴더에 들어감    
     - hadoop-3.1.2_winutils(bin)을 빈을 열어 hadoop-3.1.2(bin)에 덮어 씀     
 
+### HADOOP_HOME
+- 환경변수 설정 (자바처럼 고급시스템에서 환경변수)
+    - 1. 하둡 홈 설정 
+        - HADOOP_HOME 
+            => C:\Bigdata\hadoop-3.1.2
+        - PATH 설정 
+            1. bin 추가
+                새로만들기 => C:\Bigdata\hadoop-3.1.2\bin  
+                - %HADOOP_HOME%\bin
+            2. sbin 추가 
+                새로만들기 => C:\Bigdata\hadoop-3.1.2\sbin  
+            - %HADOOP_HOME%\sbin
 
+#### 확인하기 
+
+```bash
+# cmd => 새창열기 
+$ set   #  all path can check  
+>>> 등등등 .... 
+>>> HADOOP_HOME=C:\Bigdata\hadoop-3.1.2
+>>> 등등등 ....
+>>> JAVA_HOME=C:\Program Files\Java\jdk1.8.0_211
+>>> 등등등.... 
+
+```
+
+
+## 하둡에서 직접적으로 경로 설정 
+### 1. hadoop-env.cmd
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\hadoop-env.cmd => VSCode에서 실행 
+
+```bash
+
+@rem Set Hadoop-specific environment variables here.
+
+@rem The only required environment variable is JAVA_HOME.  All others are
+@rem optional.  When running a distributed configuration it is best to
+@rem set JAVA_HOME in this file, so that it is correctly defined on
+@rem remote nodes.
+@rem add __ used Compressed path if can not ues it = JAVA_HOME= C:\Program" "Files\Java\jdk1.8.0_211
+@rem The java implementation to use.  Required.
+set JAVA_HOME=%JAVA_HOME%
+# 두가지 방법이 있음 
+JAVA_HOME= C:\Program" "Files\Java\jdk1.8.0_211
+# 압축 된 경로 
+JAVA_HOME= C:\PROGRA~1\Java\jdk1.8.0_211
+
+####
+
+# 확인 
+# cmd 창에서 
+C:\Users\admin>cd \
+C:\> dir /x
+ C 드라이브의 볼륨에는 이름이 없습니다.
+ 볼륨 일련 번호: EC67-FFA4
+
+ C:\ 디렉터리
+>>> 등등등 
+>>> 2020-02-10  오전 09:36    <DIR>          PROGRA~1     Program Files
+>>> 등등등
+# 확인 
+# cmd 창에서 
+C:\Users\admin>cd \
+C:\> set
+>>> 등등등
+>USERNAME=admin
+>>> 등등등
+
+
+##### 
+@rem The jsvc implementation to use. Jsvc is required to run secure datanodes.
+@rem set JSVC_HOME=%JSVC_HOME%
+
+@rem set HADOOP_CONF_DIR=
+
+@rem Extra Java CLASSPATH elements.  Automatically insert capacity-scheduler.
+if exist %HADOOP_HOME%\contrib\capacity-scheduler (
+  if not defined HADOOP_CLASSPATH (
+    set HADOOP_CLASSPATH=%HADOOP_HOME%\contrib\capacity-scheduler\*.jar
+  ) else (
+    set HADOOP_CLASSPATH=%HADOOP_CLASSPATH%;%HADOOP_HOME%\contrib\capacity-scheduler\*.jar
+  )
+)
+...
+...
+...
+@rem The directory where pid files are stored. /tmp by default.
+@rem NOTE: this should be set to a directory that can only be written to by 
+@rem       the user that will run the hadoop daemons.  Otherwise there is the
+@rem       potential for a symlink attack.
+set HADOOP_PID_DIR=%HADOOP_PID_DIR%
+set HADOOP_SECURE_DN_PID_DIR=%HADOOP_PID_DIR%
+
+@rem A string representing this instance of hadoop. %USERNAME% by default.
+# 변경 => admin
+set HADOOP_IDENT_STRING=admin
+
+# 코드 추가 
+set HADOOP_PREFIX = C:\Bigdata\hadoop-3.1.2
+set HADOOP_CONF_DIR=%HADOOP_PREFIX%\etc\hadoop
+set YARN_CONF_DIR=%HADOOP_CONF_DIR%
+set PATH = %PATH%;%HADOOP_PREFIX%\bin;  %HADOOP_PREFIX%\sbin
+
+
+```
+### 2. core-site.xml 열어서 
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\core-site.xml => VSCode에서 실행 
+
+```xml
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <property>
+    <name>fs.default.name</name>
+    <value>hdfs://0.0.0.0:9000</value>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/c:/Bigdata\hadoop-3.1.2/tmp</value>
+  </property>
+</configuration>
+
+```
+
+### 3. hdfs-site.xml 열기 
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\ hdfs-site.xml  => VSCode에서 실행 
+
+```xml
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+<property>
+<name>dfs.permissions</name>
+<value>false</value>
+</property>
+<property>
+<name>dfs.namenode.name.dir</name>
+<value>/C:/Bigdata/hadoop-3.1.2/namenode</value>
+</property>
+<property>
+<name>dfs.datanode.data.dir</name>
+<value>/C:/Bigdata/hadoop-3.1.2/datanode</value>
+</property>
+</configuration>
+
+
+```
+
+### 4. 새 폴더 만들기 
+이 경로(C:\Bigdata\hadoop-3.1.2)에 새 폴더 생성
+1. tmp
+2. namenode
+3. datanode 
 ---
 
+### 5. 하둡 버전확인 
+```bash
+C:\> hadoop version
+Hadoop 3.1.2
+Source code repository https://github.com/apache/hadoop.git -r 1019dde65bcf12e05ef48ac71e84550d589e5d9a
+Compiled by sunilg on 2019-01-29T01:39Z
+Compiled with protoc 2.5.0
+From source with checksum 64b8bdd4ca6e77cce75a93eb09ab2a9
+This command was run using /C:/Bigdata/hadoop-3.1.2/share/hadoop/common/hadoop-common-3.1.2.jar
+
+``` 
 ## 하둡 설정 파일 
 
 |설정파일|설명|

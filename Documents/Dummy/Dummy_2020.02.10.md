@@ -50,8 +50,164 @@ https://hadoop.apache.org/releases.html
     - hadoop-3.1.2.tar 압축을 풀어 생긴 hadoop-3.1.2 열고 bin 폴더에 들어가 hadoop-3.1.2_winutils(bin)을 빈을 열어 hadoop-3.1.2(bin)에 덮어 쓴다 . 
 
 
+- 환경변수 설정 (자바처럼 고급시스템에서 환경변수)
+    - 1. 하둡 홈 설정 
+        - HADOOP_HOME 
+            => C:\Bigdata\hadoop-3.1.2
+        - PATH 설정 
+            1. bin
+            새로만들기 => C:\Bigdata\hadoop-3.1.2\bin  
+            - %HADOOP_HOME%\bin
+            2. sbin
+                새로만들기 => C:\Bigdata\hadoop-3.1.2\sbin  
+            - %HADOOP_HOME%\sbin
+```bash
+# cmd => 새창열기 
+$ set   #  all path can check  
+>>> 등등등 .... 
+>>> HADOOP_HOME=C:\Bigdata\hadoop-3.1.2
+>>> 등등등 ....
+>>> JAVA_HOME=C:\Program Files\Java\jdk1.8.0_211
+>>> 등등등.... 
+
+```
+
+
+#### 하둡에서 직접적으로 경로 설정 
+1. hadoop-env.cmd
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\hadoop-env.cmd => VSCode에서 실행 
+
+```cmd
+
+@rem Set Hadoop-specific environment variables here.
+
+@rem The only required environment variable is JAVA_HOME.  All others are
+@rem optional.  When running a distributed configuration it is best to
+@rem set JAVA_HOME in this file, so that it is correctly defined on
+@rem remote nodes.
+@rem add __ used Compressed path if can not ues it = JAVA_HOME= C:\Program" "Files\Java\jdk1.8.0_211
+@rem The java implementation to use.  Required.
+set JAVA_HOME=%JAVA_HOME%
+# 두가지 방법이 있음 
+JAVA_HOME= C:\Program" "Files\Java\jdk1.8.0_211
+# 압축 된 경로 
+JAVA_HOME= C:\PROGRA~1\Java\jdk1.8.0_211
+
+####
+
+# 확인 
+# cmd 창에서 
+C:\Users\admin>cd \
+C:\> dir /x
+ C 드라이브의 볼륨에는 이름이 없습니다.
+ 볼륨 일련 번호: EC67-FFA4
+
+ C:\ 디렉터리
+>>> 등등등 
+>>> 2020-02-10  오전 09:36    <DIR>          PROGRA~1     Program Files
+>>> 등등등
+# 확인 
+# cmd 창에서 
+C:\Users\admin>cd \
+C:\> set
+>>> 등등등
+>USERNAME=admin
+>>> 등등등
+
+
+##### 
+@rem The jsvc implementation to use. Jsvc is required to run secure datanodes.
+@rem set JSVC_HOME=%JSVC_HOME%
+
+@rem set HADOOP_CONF_DIR=
+
+@rem Extra Java CLASSPATH elements.  Automatically insert capacity-scheduler.
+if exist %HADOOP_HOME%\contrib\capacity-scheduler (
+  if not defined HADOOP_CLASSPATH (
+    set HADOOP_CLASSPATH=%HADOOP_HOME%\contrib\capacity-scheduler\*.jar
+  ) else (
+    set HADOOP_CLASSPATH=%HADOOP_CLASSPATH%;%HADOOP_HOME%\contrib\capacity-scheduler\*.jar
+  )
+)
+...
+...
+...
+@rem The directory where pid files are stored. /tmp by default.
+@rem NOTE: this should be set to a directory that can only be written to by 
+@rem       the user that will run the hadoop daemons.  Otherwise there is the
+@rem       potential for a symlink attack.
+set HADOOP_PID_DIR=%HADOOP_PID_DIR%
+set HADOOP_SECURE_DN_PID_DIR=%HADOOP_PID_DIR%
+
+@rem A string representing this instance of hadoop. %USERNAME% by default.
+# 변경 => admin
+set HADOOP_IDENT_STRING=admin
+
+# 코드 추가 
+set HADOOP_PREFIX = C:\Bigdata\hadoop-3.1.2
+set HADOOP_CONF_DIR=%HADOOP_PREFIX%\etc\hadoop
+set YARN_CONF_DIR=%HADOOP_CONF_DIR%
+set PATH = %PATH%;%HADOOP_PREFIX%\bin;  %HADOOP_PREFIX%\sbin
+
+
+```
+2. core-site.xml 열어서 
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\core-site.xml => VSCode에서 실행 
+
+```xml
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <property>
+    <name>fs.default.name</name>
+    <value>hdfs://0.0.0.0:9000</value>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/c:/Bigdata\hadoop-3.1.2/tmp</value>
+  </property>
+</configuration>
+```
+### 3. hdfs-site.xml 열기 
+C:\Bigdata\hadoop-3.1.2\etc\hadoop\ hdfs-site.xml  => VSCode에서 실행 
+
+```xml
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+<property>
+<name>dfs.permissions</name>
+<value>false</value>
+</property>
+<property>
+<name>dfs.namenode.name.dir</name>
+<value>/C:/Bigdata/hadoop-3.1.2/namenode</value>
+</property>
+<property>
+<name>dfs.datanode.data.dir</name>
+<value>/C:/Bigdata/hadoop-3.1.2/datanode</value>
+</property>
+</configuration>
+
+
+```
+
+
+### 4. 새 폴더 만들기 
+이 경로(C:\Bigdata\hadoop-3.1.2)에 새 폴더 생성
+1. tmp
+2. namenode
+3. datanode 
 ---
 
+
+
+---
 ### 하둡 설정 파일 
 
 |하둡 설정파일|설명|
@@ -63,16 +219,6 @@ https://hadoop.apache.org/releases.html
 |conf/hdfs-site.xml|하둡 분산 파일 시스템 설정 스크립트|
 |conf/mapred-site.xml|하둡 맵리듀스 설정 스크립트|
 ---
-
----
-
-```py 
-
-# 
-```
----
-
-
 
 # 판다스 
 ``` py
@@ -90,11 +236,13 @@ https://hadoop.apache.org/releases.html
 
 열을 시리즈 
 열과 행을 데이터 프레임 테이블 전체
+
 시리즈 구조 (인덱스 데이터 데이터 타입)
 데이터 프레임 생성 문법 기억
 딕셔너리 타입으로 선언 
 판다스로 지정해주기
 describe
+
 정렬 => sort_values
 판다스 상관계수 확인하는 함수
 corr
@@ -128,10 +276,3 @@ boxplot
 folium 기본 설정을 해주는 기능folium.Map
 
 ```
----
-### 데이터 엔지니어링 
-### 데이터 분석거
-### 데이터 사이언티스트
-### 데이터 아키덱쳐 
----
-
