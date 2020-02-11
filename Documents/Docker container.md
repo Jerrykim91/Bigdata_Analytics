@@ -145,3 +145,16 @@ $ cd Pandas/
 
 # 궁금한거 
 - 파워쉘은 뭐야 
+
+
+
+# 도커 머신러닝용 
+
+## 도커 풀 이미지 가지고 오기 
+```bash
+$ docker pull mrsono0/base_project:ai
+
+
+docker run --rm --name ai -itd -u vscode -p 8888-8889:8888-8889  -p 6006-6015:6006-6015 -e JUPYTER_RUN=yes sun4131/ai
+
+```
