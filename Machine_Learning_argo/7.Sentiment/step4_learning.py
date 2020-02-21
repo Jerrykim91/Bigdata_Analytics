@@ -24,6 +24,7 @@ def step4_learning():
     print(len(X_train),len(X_test))
 
     # 단어장을 만들어주는 객체 생성 
+    # TF_IDF : TF * IDF => 단어의 빈도와 문서의 빈도를 곱한 값 
     tfidf = TfidfVectorizer(lowercase=False, tokenizer=tokenizer_porter)
     # 데이터를 학습하기 위한 객체
     logistic = LogisticRegression(C=10.0, penalty='l2', random_state=0)
