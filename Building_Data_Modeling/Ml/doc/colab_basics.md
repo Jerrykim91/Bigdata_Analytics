@@ -215,7 +215,8 @@
 
 ---
 
-## 변수
+## [변수](https://drhongdatanote.tistory.com/14)
+
 - 독립변수(Independent variable)란 ? 
     - 어떤실험에서 실험자가 직접변경(의도적으로)하는 변수를 의미 
     - 스스로 바꿀 수 있는 값
