@@ -1,37 +1,4 @@
 # 코드 작성전 어떤 그림이 그려질지 상상하자 
-# 그리고 의사코드를 작성 =>  다시 역설계 한다.
-
-
-'''
-의사 코드 작성
-목표 : 
-
-step01
-1. 파일 목록화 
-    - 파일에서 파일을 목록화 
-    - 파일명을 전부 얻는다
-2. text 파일 한개 확인  
-    - file_list의 개수만큼 반복
-    - 20번 반복(list의 갯수)
-3. 언어코드 획득 및 추출
-    - 파일에서 파일명 확득 
-    - 정규식을 이용해 특정 포인트만 추출 
-
-step02
-1. 전처리를 통해 영어만 남김 
-    - 파일을 불러옴
-    - 읽을때 소문자만 읽어옴
-2. 알파벳만 남김(소문자만) 
-    - 정규식을 이용 
-3. 알파벳 별로 할당할 각각의 공간을 만듬 
-    - a-z 까지 26개의 공간이 필요 
-step03 
-1. 텍스트 파일만 읽어서 알파벳 
-step01 
-step01 
-
-'''
-
 
 
 # import
@@ -110,53 +77,31 @@ train_data = load_data()
 test_data  = load_data('test')
 
 
-
-file_path = './input/'
-full_path = file_path + 'labels_freqs_data'
-
-try: 
-    with open('{}.json'.format(full_path),'w', encoding='utf-8') as f: 
-        
-        json.dump([train_data, test_data],f)
-        print('정상동작')
-except Exception as e:
-    print('에러발생', e)
-
-
-
-try:
-    with open('{}.json'.format(full_path),'r', encoding='utf-8') as f:
-        tmp = json.load(f)
-    print('정상출력','\n길이 =', len(tmp)) 
-    
-except Exception as e :
-    print('에러발생', e)
-
 file_path = './input/' + path
 full_path = file_path + 'labels_freqs_data'
 
 
-def try_load(name, option, encoding='utf-8'):
-    name = str(name)
-    option = str(option)
+def try_load( name, option, encoding='utf-8'):
     file_path = './input/' + '{}.json'.format(name)
+    
     try:
-        with open( path, option) as f:
+        with open( file_path , option) as f:
             if option == 'w' :
                 input_data = input('덤프시킬 데이터를 입력하세요')
                 json.dump(input_data,f)
 
             elif option == 'r' :  
-                json.load(f)
+                tmp = json.load(f)
                 print('\n길이 =', len(tmp)) 
+                return tmp
 
         print('정상동작')
 
     except Exception as e:
         print('에러발생', e )
 
-    return 
-
+    return  
+tmp = try_load('test_data', 'r')
 
 print(len(tmp[0]['labels']),len(tmp[0]['freqs']))
 print(len(tmp[1]['labels']),len(tmp[1]['freqs']))
