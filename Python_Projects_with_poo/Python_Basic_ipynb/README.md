@@ -1,14 +1,9 @@
   # Python programming ( 2019.12.16 ~ 종료 2019.12.26)
 
 ## 목차
-
-### Debug_JK_Lib
-    
----
-### [Python_Basic_py](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects_with_poo/Python_Basic_py)
-
 ---
 ### [Python_Basic_ipynb](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects_with_poo/Python_Basic_ipynb)
+---
 
 - [Python_Basic_P000_01.ipynb](https://github.com/Jerrykim91/Bigdata_Analytics/blob/master/Python_Projects_with_poo/Python_Basic_ipynb/Python_Basic_P000_01.ipynb)
 
