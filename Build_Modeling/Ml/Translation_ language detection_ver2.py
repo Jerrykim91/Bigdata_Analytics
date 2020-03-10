@@ -1,8 +1,7 @@
 # 코드 작성전 어떤 그림이 그려질지 상상하자 
 
-
 # import
-import os, re , glob, json
+import re, glob, json
 
 import pandas as pd
 import numpy as np
@@ -11,9 +10,9 @@ import matplotlib.pyplot as plt
 %matplotlib inline
 
 from string import ascii_lowercase
-
-
-
+# 외장함수를 활용하여 처리
+import os
+# 파일 목록 보기 =>  파일명 전부 확득  
 try:
     path = './input/train/*.txt'
     file_list = glob.glob(path)
@@ -21,6 +20,15 @@ try:
     
 except Exception as e :
     print('에러발생', e)
+
+# -----------
+# 변수
+file_path_input  = './input/'
+file_path_output = './output/'
+file_name        = 'labels_freqs_data'
+full_path_input  = file_path_input  + file_name
+full_path_output = file_path_output + file_name
+# -----------
 
 
 

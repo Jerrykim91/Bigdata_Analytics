@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jquery_ https://developers.google.com/speed/libraries#jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        // 문서가 로드 됨 => 이벤트가 발생하면 자동 호출 
+        // DOM(document object model) tree가 로드 됨
+            $(document).ready(()=>{
+             // =  $(document).ready( function()=>{})
+                console.log(1)
+            })
+    </script>
+
+    <!-- html_인터프리터(interpreter) 언어  -->
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container-md pt-5">
+        <fieldset>
+            <textarea class = oriInput >원문</textarea>
+            <br>
+            <button id="LangDetectBtn">언어감지</button>
+            <br>
+        </fieldset>
+
+
+        <fieldset >
+            <textarea>번역</textarea>
+            <br>
+            <button>번역문</button>
+            <br>
+        </fieldset>
+
+    </div>
+
+<!-- 언어 감지 버튼 , 번역 버튼  -->
+
+    <script>
+        // 내가 조작 할 모든 요소가 메모리에 로드 됨
+        console.log(2)
+        // 언어 감짐 버튼을 찾아서 클릭 이벤트를 적용해라 
+        // $('css selector') => html 내에 특정 요소를 특정 or 찾음 
+        // $('css selector').on('이벤트', 콜백함수(이벤트가 발생하면 실제적으로 일하는 함수 )=>{}) // .on() = 실행
+        // 입력함수 , 콜백함수  
+        // $('css selector').on('', function(){}) 
+        $('#LangDetectBtn').on('click', ()=>{
+            // ajax(아작스)를 이용해 원문 들고 서버로 request를 수행
+            // http 프로토콜로 통신, 데이터를 들고 가는 방식 : 메소드 
+            // 메소드 : get, post, push ... 
+            // 통신 , ajax, post, 수단  => js
+            console.log( $('.oriInput').val() ) 
+            $.post({
+                //  통신할때 뭐가 필요하니 
+                //  서버주소(url),
+                'url'  : '/langTypeDetect',               // 서버주소
+                'data' : 'ori=' + $('.oriInput').val(),   // 파라미터  
+                'dataType' : 'json',                     // 서버가 json으로 응답
+                'success'  : ( resJson ) => {
+                    console.log( '통신성공', resJson )
+                },          // 통신 성공 후 
+                'error'    : function( err ){
+                    console.log('통신실패', err)
+                }           // 통신 실패 후 
+            })
+            // alert('호출')
+        }) 
+        // 표준함수 
+        // function a() {
+
+        // }
+    </script>
+</body>
+</html>
