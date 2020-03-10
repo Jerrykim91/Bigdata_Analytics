@@ -1,7 +1,8 @@
 # 코드 작성전 어떤 그림이 그려질지 상상하자 
 
-# import
-import re, glob, json
+# import 
+import re, glob, json, os
+from string import ascii_lowercase
 
 import pandas as pd
 import numpy as np
@@ -9,17 +10,16 @@ import numpy as np
 import matplotlib.pyplot as plt 
 %matplotlib inline
 
-from string import ascii_lowercase
-# 외장함수를 활용하여 처리
-import os
+
 # 파일 목록 보기 =>  파일명 전부 확득  
 try:
     path = './input/train/*.txt'
     file_list = glob.glob(path)
-    print('정상작동',file_list)
+    print('정상작동\n',file_list)
     
 except Exception as e :
     print('에러발생', e)
+
 
 # -----------
 # 변수
@@ -29,7 +29,6 @@ file_name        = 'labels_freqs_data'
 full_path_input  = file_path_input  + file_name
 full_path_output = file_path_output + file_name
 # -----------
-
 
 
 # get_data() 함수 
@@ -42,7 +41,7 @@ def get_data(file_path):
     try:
         with open( file_path, encoding='utf-8') as f :
             text = f.read().lower() 
-            p = re.compile('[^a-z]*')
+            p    = re.compile('[^a-z]*')
             text = p.sub('', text)
 
         print('정상작동', f,'\n','='*70 )
@@ -52,7 +51,7 @@ def get_data(file_path):
         print('에러발생', e)
 
 
-    counts = [0] * 26
+    counts = [0] * 26 # counts = [0 for n in range(26)]
     ASCII_A = ord('a')
     for i in text:
         counts[(ord(i)-ASCII_A)] += 1
@@ -63,13 +62,16 @@ def get_data(file_path):
     return lng_code, frequences
 
 
-# get_data()
+# get_data() # 함수 확인 
 
 
-# 함수화 2 
 # load_data()함수
-def load_data(path = 'train'):
-    file_boxs = glob.glob('./input/{}/*txt'.format(path))
+# defult = path = 'train' (지금은 생략 )
+def load_data(path):
+
+    file_path_input  = './input/'
+    file_boxs = glob.glob(file_path_input + '{}/*txt'.format(path))
+
     labels = list()
     freqs  = list()
 
@@ -78,28 +80,26 @@ def load_data(path = 'train'):
         labels.append( lng )
         freqs.append( freq )
 
-    return {'labels ':labels , 'freqs': freqs } 
+    return {'labels ':labels , 'freqs': freqs } #  {'labels':['en','fr'], 'freqs': [[],[]] } 
 
 
-train_data = load_data()
-test_data  = load_data('test')
-
-
-file_path = './input/' + path
-full_path = file_path + 'labels_freqs_data'
-
-
+# try_load()함수
 def try_load( name, option, encoding='utf-8'):
-    file_path = './input/' + '{}.json'.format(name)
+    file_path_input  = './input/'
+    file_path = file_path_input + '{}.json'.format(name)
     
     try:
         with open( file_path , option) as f:
             if option == 'w' :
-                input_data = input('덤프시킬 데이터를 입력하세요')
-                json.dump(input_data,f)
+                train_data = load_data('train')
+                test_data  = load_data('test')
+                data = [train_data, test_data]
+                # print(type(data))
+                json.dump(data,f)
 
             elif option == 'r' :  
                 tmp = json.load(f)
+                # print(tmp)
                 print('\n길이 =', len(tmp)) 
                 return tmp
 
@@ -109,54 +109,42 @@ def try_load( name, option, encoding='utf-8'):
         print('에러발생', e )
 
     return  
-    
-tmp = try_load('test_data', 'r')
-
-print(len(tmp[0]['labels']),len(tmp[0]['freqs']))
-print(len(tmp[1]['labels']),len(tmp[1]['freqs']))
 
 
-df_freqs = pd.DataFrame(tmp[0]['freqs'])
-df_labels = pd.DataFrame(tmp[0]['labels']) 
-df_freqs.columns = list(ascii_lowercase)
-df_concat = pd.concat([df_freqs, df_labels],axis=1)
+# sklearn
+from sklearn import svm, metrics
+from sklearn.externals import joblib
 
-print(df_concat['label'].unique())
-df_pv = df_concat.pivot_table(index = df_concat.label) 
+try_load('test_data', 'w')
+freq = try_load('test_data', 'r')
 
-
-
-plt.style.use('ggplot')
-df_pv.plot(kind='bar',figsize=(16,8), ylim=(0,0.3))
-num = 1
-file_path = './img/na_per_freqs{}.png'.format(num)
-print('저장경로',file_path)
-plt.savefig(file_path)
-plt.show()
+print(len(freq[0]['labels']),len(freq[0]['freqs']))
+print(len(freq[1]['labels']),len(freq[1]['freqs']))
 
 
-df_pv.plot(kind='bar',subplots=True,figsize=(16,8), ylim=(0,0.25))
-num = 2
-file_path = './img/na_per_freqs{}.png'.format(num)
-print('저장경로',file_path)
-plt.savefig(file_path)
-plt.show()
+clf = svm.SVC( gamma = 'auto' )
+clf.fit(freq[0]['freqs'],freq[0]['labels'])
+predict = clf.predict(freq[1]['freqs'])
+# print(predict)
+metrics.classification_report(freq[1]['labels'], predict )
 
+try:
+    joblib.dump(clf,'./output/clf_lang_20200310.model')
+except Exception as e:
+    print('에러발생', e )
 
-alphabet = ascii_lowercase
-all_nara = df_concat.label.unique()
-for alpa in alphabet:
-    for nara in all_nara:
+label_dic = {
+    'en':'영어',
+    'fr':'프랑스어',
+    'tl':'타갈리아어',
+    'id':'인도네시아어'
+}
 
-        test = df_concat[ df_concat.label == '{}'.format(nara)]
-        test = test['{}'.format(alpa)]
-        test.plot( kind='hist', alpha=0.4, label=nara )
-    
-    plt.legend()                   
-    plt.suptitle('%s freqs' % alpa) 
-   
-    file_path = './img/%s_freqs.png'% alpa
-    plt.savefig(file_path)
-    print('저장경로',file_path)
-    plt.show()
-    
+try:
+    with open('clf_labels.json', 'w', encoding='utf-8' ) as f:
+    json.dump(label_dic, f)
+    print('정상동작')
+
+except Exception as e:
+    print('에러발생', e )
+
