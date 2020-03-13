@@ -124,19 +124,19 @@ def try_load( name, option, encoding='utf-8'):
     try:
         # 두가지 케이스를 한 with문에 담음 
         with open( file_path , option) as f:
-            # 만들기 +
+            # 만들기 + json 파일 생성 
             if option == 'w' :
-                train_data = load_data('train')
-                test_data  = load_data('test')
-                data = [train_data, test_data]
-                # print(type(data))
-                json.dump(data,f)
-
+                train_data = load_data('train') # load_data함수로 train 데이터 불러옴 
+                test_data  = load_data('test')# load_data함수로 test 데이터 불러옴 
+                data = [train_data, test_data] # 위에서 받아온 데이터를 리스트로 변경 후 변수에 담음 
+                # print(type(data)) # 데이터 타입 확인 
+                json.dump(data,f) # 덤프 
+            # 읽기 + json파일 읽어오기 
             elif option == 'r' :  
-                tmp = json.load(f)
-                # print(tmp)
-                print('\n길이 =', len(tmp)) 
-                return tmp
+                tmp = json.load(f) # 로드된 파일을 tmp에 담기 
+                # print(tmp) # 데이터 확인 
+                print('\n길이 =', len(tmp))  # 데이터 확인 길이확인겸 정상 데이터인지 판별
+                return tmp  # 값을 리턴 
 
         print('정상동작')
 
@@ -147,12 +147,49 @@ def try_load( name, option, encoding='utf-8'):
 
 
 
-train_data = load_data()
-test_data  = load_data('test')
-get_data()
+# train_data = load_data()
+# test_data  = load_data('test')
+# get_data()
+# try_load('test_data', 'w')
+
+# sklearn
+from sklearn import svm, metrics
+from sklearn.externals import joblib
+
 try_load('test_data', 'w')
+freq = try_load('test_data', 'r')
+
+print(len(freq[0]['labels']),len(freq[0]['freqs']))
+print(len(freq[1]['labels']),len(freq[1]['freqs']))
 
 
+clf = svm.SVC( gamma = 'auto' )
+clf.fit(freq[0]['freqs'],freq[0]['labels'])
+predict = clf.predict(freq[1]['freqs'])
+# print(predict)
+metrics.classification_report(freq[1]['labels'], predict )
+
+try:
+    joblib.dump(clf,'./output/clf_lang_20200310.model')
+except Exception as e:
+    print('에러발생', e )
+
+label_dic = {
+    'en':'영어',
+    'fr':'프랑스어',
+    'tl':'타갈리아어',
+    'id':'인도네시아어'
+}
+
+try:
+    with open('clf_labels.json', 'w', encoding='utf-8' ) as f:
+    json.dump(label_dic, f)
+    print('정상동작')
+
+except Exception as e:
+    print('에러발생', e )
+    
+     
 ```
 
 ### Review_before_coding
