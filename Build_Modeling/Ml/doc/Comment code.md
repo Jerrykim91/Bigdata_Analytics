@@ -63,7 +63,6 @@ def get_data(file_path):
     return lng_code, frequences
 
 
-# 함수화 2 
 # 훈련용 데이터, 테스트용 데이터 로드 
 # 중간경로가 train 혹은 test 
 
@@ -90,29 +89,63 @@ def load_data(path = 'train'):
     return {'labels ':labels , 'freqs': freqs } 
     #  #  {'labels':['en','fr'], 'freqs': [[],[]
 
+# 구버전 - 버그발생 => input의 역활 인지 미숙 
+# def try_load( name, option, encoding='utf-8'):
+#     # 문자열 안나오게 하려했는데 => 변수로 받아들여서 실패 
+#     # 동작은 하지만 
+    
+#     file_path = './input/' + '{}.json'.format(name)
+    
+#     try:
+#         with open( file_path , option) as f:
+#             if option == 'w' :
+#                 input_data = input('덤프시킬 데이터를 입력하세요')
+#                 json.dump(input_data,f)
 
+#             elif option == 'r' :  
+#                 tmp = json.load(f)
+#                 print('\n길이 =', len(tmp)) 
+
+#         print('정상동작')
+
+#     except Exception as e:
+#         print('에러발생', e )
+
+#     return 
+
+
+# try_load()함수
 def try_load( name, option, encoding='utf-8'):
-    #  문자열 안나오게 하려했는데 => 변수로 받아들여서 실패 
-    # 그외엔 다 정상동작 
+    # 이전 함수는 name이 뭘 이야기하는 줄 몰랐음 -> 그리고 경로가 너무 지저분해서 내부에 상대경로를 추가 조금은 이해하기 쉽도록 풀어서 작성 
+    file_path_input  = './input/'
+    file_path = file_path_input + '{}.json'.format(name)
     
-    file_path = './input/' + '{}.json'.format(name)
-    
+    # 예외처리 진행 
     try:
+        # 두가지 케이스를 한 with문에 담음 
         with open( file_path , option) as f:
+            # 만들기 +
             if option == 'w' :
-                input_data = input('덤프시킬 데이터를 입력하세요')
-                json.dump(input_data,f)
+                train_data = load_data('train')
+                test_data  = load_data('test')
+                data = [train_data, test_data]
+                # print(type(data))
+                json.dump(data,f)
 
             elif option == 'r' :  
                 tmp = json.load(f)
+                # print(tmp)
                 print('\n길이 =', len(tmp)) 
+                return tmp
 
         print('정상동작')
 
     except Exception as e:
         print('에러발생', e )
 
-    return 
+    return  
+
+
 
 train_data = load_data()
 test_data  = load_data('test')
@@ -122,14 +155,12 @@ try_load('test_data', 'w')
 
 ```
 
-
 ### Review_before_coding
 ```py
 # Review_before_coding - 돌아보기 
 
 # 데이터 수집 
 # 위키피디아를이용 => 스크래핑 수준이면 처리가 가능
-
 
 sample = '''
 https://ko.wikipedia.org/wiki/방탄소년단
@@ -289,7 +320,6 @@ print(frequences, len(frequences))
 import glob
 import os, re
 
-
 try:
     path = './input/train/*.txt'
     file_list = glob.glob(path)
@@ -305,7 +335,6 @@ def get_data(file_path):
     # 정규식 사용 
     p = re.compile('^[a-z]{2}')
     lng_code = p.match(base_name).group()
-
 
     # 3. 파일을 열면서 정규화
     try:
@@ -333,7 +362,6 @@ def get_data(file_path):
     # 5. 람다를 이용해 빈도수 연산하기 
     frequences = list(map(lambda x:x/total_counts, counts)) # 알파벳 갯수 
     
-
 
     # lang_code   :  언어 코드 
     # frequences  :  알파벳 별로 담긴 평균 빈도수  
