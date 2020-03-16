@@ -8,7 +8,7 @@
     - img
     - input
     - output
-    - src
+    - src(ml_기초)
         - input
         - output
     - [bgdata_ml_with_flask](https://github.com/Jerrykim91/bgdata_ml_with_flask)
