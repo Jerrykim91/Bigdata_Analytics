@@ -107,38 +107,41 @@ y_test = test['labels']
 # accuracy_score(y_test, predict )
 # t = classification_report( y_test, predict )
 
-def tmp_test(al_data , t_data, s_data):
+def tmp_train(al_data , t_data, s_data):
 
-    if t_data == train :
+#     if t_data == train :
+#         dataType='train'
         
-
+#     elif t_data == test:
+#         dataType='t10k'
+        
     decode_mnist( dataType = t_data , samples = s_data )
 
     if t_data == 't10k' :
-        data = load_csv(dataType = t_data)
+        test = load_csv(dataType = t_data)
     else: 
-        data = load_csv()
+        test = load_csv()
     
-    X_data = data['images'] # X_test
-    y_data = data['labels'] # y_test
+    X_test = test['images'] # X_test
+    y_test = test['labels'] # y_test
     
 
     # 알고리즘
     clf = al_data
     # 학습     
-    clf.fit(X_data, y_data)
+    clf.fit(X_test, y_test)
     # 예측
-    predict = clf.predict( X_data )
+    predict = clf.predict( X_test )
     # 실제 정답 
-    ml_accuracy = accuracy_score(y_data, predict )
+    ml_accuracy = accuracy_score(y_test, predict )
 #     print(f'accuracy : {ml_accuracy}')
     # 리포트
-    t = classification_report( y_data, predict )
-    print('='*50)
+    t = classification_report( y_test, predict )
+    print('='*60)
     # 평가
-    ml_score= clf.score( X_data, y_data )
+    ml_score= clf.score( X_test, y_test )
     print(f'Accuracy : {ml_accuracy} || Score : {ml_score}')
-    print('='*50)
+    print('='*60)
     
     return print(t)
 
@@ -148,7 +151,7 @@ def tmp_test(al_data , t_data, s_data):
 # clf = SVC()
 
 
-tmp_test( SVC(), 't10k', 1000)
+# tmp_test( SVC(), 't10k', 1000)
 
 
 
@@ -158,13 +161,17 @@ train = load_csv()
 test  = load_csv( dataType='t10k' )
 len(train['labels']), len(test['labels']) # 데이터 준비 완료 
 
-def tmp(al_data , t_data, s_data, mult = 1 ):
+def tmp(al_data , t_data, s_data, mult=1 ):
 
     data = load_csv()
     X_data = data['images'] # X_test
     y_data = data['labels'] # y_test
-
-    decode_mnist( dataType = t_data , samples = (s_data* mult) )
+    samples_size = int(s_data* mult)
+    
+    print('='*60)
+    print('samples_size',samples_size)
+    print('='*60)
+    decode_mnist( dataType = t_data , samples = samples_size )
     # 알고리즘
     clf = al_data
     # 학습     
@@ -176,14 +183,20 @@ def tmp(al_data , t_data, s_data, mult = 1 ):
 #     print(f'accuracy : {ml_accuracy}')
     # 리포트
     t = classification_report( y_data, predict )
-    print('='*50)
+    print('='*60)
     # 평가
     ml_score= clf.score( X_data, y_data )
     print(f'Accuracy : {ml_accuracy} || Score : {ml_score}')
-    print('='*50)
+    print('='*60)
     
     return print(t)
 
+# tmp( SVC(), 't10k', 1000, 8)
+
+
+def tmp_scaler():
+
+    pass
 
 
 if __name__ == "__main__":
