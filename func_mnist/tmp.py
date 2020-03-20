@@ -24,10 +24,12 @@ from sklearn.metrics import accuracy_score , classification_report
 
 def decode_mnist( dataType='train', dir='./data/mnist', samples=1000 ):
     
+    # 데이터를 불러 온다
     label_name = f'{dir}/{dataType}-labels-idx1-ubyte'  
     image_name = f'{dir}/{dataType}-images-idx3-ubyte'
     print(label_name, '\n', image_name)
     
+    # 데이터를 읽는다
     label_f = open( label_name, 'rb')
     image_f = open( image_name, 'rb')
     
@@ -107,7 +109,80 @@ y_test = test['labels']
 # accuracy_score(y_test, predict )
 # t = classification_report( y_test, predict )
 
-def tmp_train(al_data , t_data, s_data):
+
+def re_train():
+    
+    # 파마리터 : 
+    # 데이터 인코딩
+    # 데이터 로드
+
+    # 알고리즘
+    clf = al_data
+    # 학습 => train
+    clf.fit(X_test, y_test)
+    # 예측 => test
+    predict = clf.predict( X_test )
+    # 실제 정답 => test의 labels , y의 predict를 통해
+    ml_accuracy = accuracy_score(y_test, predict )
+#     print(f'accuracy : {ml_accuracy}')
+    # 리포트 => test의 labels 기반으로 
+    t = classification_report( y_test, predict )
+    print('='*60)
+    # 평가
+    print(f'Accuracy : {ml_accuracy} ||')
+    print('='*60)
+    
+    return print(t)
+
+
+
+def algorithm(algo_data):
+
+    # 알고리즘
+    clf = algo_data
+
+    return
+
+
+def tmp_test(t_data, sample , al_data ):
+# 목적 : 명확하게 'train', 'test'를 입력 받고 자함
+# 뭔가 큰 오류를 범하고 있는 느낌 
+    if t_data == 'train' :
+        dataType = 'train'
+        print(dataType)
+        
+    elif t_data == 'test':
+        dataType='t10k'
+        print(dataType,'== test')
+    #     
+    decode_mnist( dataType , samples = sample )
+    test = load_csv(dataType)
+    
+    X_test = test['images'] # X_test
+    y_test = test['labels'] # y_test
+
+    # print(X_test, y_test)
+
+    # 알고리즘
+    clf = al_data
+    # 학습     
+    clf.fit(X_test, y_test)
+    # 예측
+    predict = clf.predict( X_test )
+    # 실제 정답 
+    ml_accuracy = accuracy_score(y_test, predict )
+#     print(f'accuracy : {ml_accuracy}')
+    # 리포트
+    t = classification_report( y_test, predict )
+    print('='*60)
+    # 평가
+    ml_score= clf.score( X_test, y_test )
+    print(f'Accuracy : {ml_accuracy} || Score : {ml_score}')
+    print('='*60)
+
+    return print(t)
+
+def tmp_train(al_data , t_data, sample):
 
 #     if t_data == train :
 #         dataType='train'
@@ -115,7 +190,7 @@ def tmp_train(al_data , t_data, s_data):
 #     elif t_data == test:
 #         dataType='t10k'
         
-    decode_mnist( dataType = t_data , samples = s_data )
+    decode_mnist( dataType = t_data , samples = sample )
 
     if t_data == 't10k' :
         test = load_csv(dataType = t_data)
@@ -154,19 +229,19 @@ def tmp_train(al_data , t_data, s_data):
 # tmp_test( SVC(), 't10k', 1000)
 
 
-
-
 # 데이터 준비
 train = load_csv()
 test  = load_csv( dataType='t10k' )
 len(train['labels']), len(test['labels']) # 데이터 준비 완료 
 
-def tmp(al_data , t_data, s_data, mult=1 ):
+
+
+def tmp(al_data , t_data, sample, mult=1 ):
 
     data = load_csv()
     X_data = data['images'] # X_test
     y_data = data['labels'] # y_test
-    samples_size = int(s_data* mult)
+    samples_size = int(sample* mult)
     
     print('='*60)
     print('samples_size',samples_size)
@@ -200,4 +275,9 @@ def tmp_scaler():
 
 
 if __name__ == "__main__":
-    tmp_test() #  디코딩 
+    tmp_train() #  디코딩 
+
+
+# 문제 지금 내함수는 한파일만 들고와서 작업 된다 
+# 테스트를 돌릴려면 train의 예측데이터가 있는경우 가능하다 
+# 나의 함수는 테스트로 예측 되었기때문에 접근 자체가 잘못 되었다 
