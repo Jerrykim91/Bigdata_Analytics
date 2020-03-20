@@ -111,12 +111,13 @@ y_test = test['labels']
 
 
 def re_train():
-    
+    # 
     # 파마리터 : 
     # 데이터 인코딩
     # 데이터 로드
 
     # 알고리즘
+    # 계속 변하면 좋..
     clf = al_data
     # 학습 => train
     clf.fit(X_test, y_test)
@@ -126,10 +127,10 @@ def re_train():
     ml_accuracy = accuracy_score(y_test, predict )
 #     print(f'accuracy : {ml_accuracy}')
     # 리포트 => test의 labels 기반으로 
-    t = classification_report( y_test, predict )
+    # t = classification_report( y_test, predict )
     print('='*60)
-    # 평가
-    print(f'Accuracy : {ml_accuracy} ||')
+    # 평가 => f'Accuracy : {ml_accuracy} ||'
+
     print('='*60)
     
     return print(t)
