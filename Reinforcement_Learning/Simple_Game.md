@@ -113,3 +113,12 @@ import matplotlib.pyplot as plt
 %matplotlib inline
 
 ```
+
+
+# 알고리즘 정의 
+
+## Greedy Algorithm(그리디 알고리즘, 탐욕 알고리즘) 
+
+
+## E-Greedy Algorithm
+
