@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 class SlotArm():
     # 초기화 -> 확률값 초기화(외부에서 주입)
     # 생성자 함수 생성 
+    # p : 객체를 만들 때 주어지는 확률값
     def __init__(self, p):
         # 맴버 변수 self.p가 만들어지고, 외부에서 입력된 p로 인해 값이 초기화 
         self.p = p 
@@ -122,7 +123,7 @@ class EpsilonGreedyEngine(GameEngine):
         # 직전의 가치
         v = self.v[ choice_arm ]
 
-        self.v[ choice_arm ] = (n-1)/n * v-1 + (1/n) * reward
+        self.v[ choice_arm ] = ((n-1)/n)*v + (1/n) * reward
         pass
 
     def getName(self):
@@ -178,35 +179,37 @@ arms = [ SlotArm(0.3), SlotArm(0.5), SlotArm(0.9) ] # 30%, 50%, 90%
 algos = [EpsilonGreedyEngine()]
 
 # 알고리즘별로 시뮬레이션을 1000번 한다. 
-SIMULATION_COUNT  = 1000
+SIMULATION_COUNT = 1000
 # 1번의 시뮬레이션에서는 250의 에피소드가 존재
-EPISODE_COUNT     = 250
+EPISODE_COUNT    = 250
 
 for algo in algos: # 알고리즘 별로 시뮬레이션 
     result = simulator_play( algo, arms, SIMULATION_COUNT, EPISODE_COUNT )
-    print(result)
-# 시각화 (선형차트)
+    df = pd.DataFrame( {'times':result[0], 'reward':result[1]} )
+    tmp = df.groupby( 'times' ).mean()
+    # 시각화 (선형차트)
+    plt.plot( tmp,  label=algo.getName() )
 
 # 그래프 표시
-# plt.show(0)
+plt.xlabel('Episode')
+plt.ylabel('Reward Average')
+plt.legend(loc='best')
+plt.show()
 
-print(result[0].shape, result[1].shape)
+# print(result[0].shape, result[1].shape)
 
-df = pd.DataFrame( {'times':result[0], 'reward':result[1]} )
-print(df.shape)
+
+# print(df.shape)
 # 슬롯머신의 암으 선택하는 횟수가 증가될수록 - 보상을 많이주는 암을 선택 
 # 보상 값이 주로 1인 것을 보면, 보상을 잘주는 팔만 선택한것을 알수 있다. 
-print(df.tail(100))
+# print(df.tail(100))
 
-tmp = df.groupby( 'times' ).mean()
-print(tmp.shape)
 
-print(tmp.tail(1))
+# print(tmp.shape)
+
+# print(tmp.tail(1))
 
 # 슬롯머신의 암을 선택하는 횟수가 증가 될수록 보상을 많이 주는 암을 선택하는 경향이 보인다.
 # 보상 값이 주로 1인 것을 보면 보상을 잘주는 팔만 선택하고 있다는 것을 알 수 있다.
-print(df.tail(100)) 
-
-plt.plot( tmp )
-plt.show()
+# print(df.tail(100)) 
 
