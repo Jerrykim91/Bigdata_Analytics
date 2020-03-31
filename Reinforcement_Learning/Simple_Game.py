@@ -68,8 +68,6 @@ class GameEngine():
     def getName(self):
         pass 
 
-    pass
-
 
 """
 # ε-greedy 알고리즘
@@ -129,6 +127,55 @@ class EpsilonGreedyEngine(GameEngine):
     def getName(self):
         # 리턴 값 -> ε-greedy 알고리즘 이용
         return 'ε-greedy 알고리즘 이용'
+
+
+"""
+# UCB1 알고리즘
+
+- 절차
+    - 1. 선택한 팔의 시행 횟수 +1
+    - 2. 성공시(보상을 받으면), 선택한 팔의 성공 횟수 +1
+    - 3. 시행 횟수가 0인 팔이 존재하는 경우, 가치를 갱신하지 않는다 => 0으로 나눌수가 없어서
+    - 4. 시행 횟수가 모두 0이상이면, 팔의 가치에 대해서 탐색과 이용에 대한 균형을 잡는다는 대전에 하에, 모든 팔의 가치를 갱신한다
+
+    - 모든 팔을 한번 이상 사용할때까지는 가치 갱신을 하지 않는다 => 탐색
+    - 모든 팔을 최소 1회 이상 사용해 봤다면, 전체 arm에대 가치 갱신을 시도한다
+"""
+# Image( '/content/drive/My Drive/Colab Notebooks/2기/dl_data/UCB1.jpeg', width=400 )
+
+# UCB1 알고리즘 추가 
+class UCB1Engine(GameEngine):
+    # 왜 인잇함수는 없을까 ?
+
+    def initialize(self):
+        # 경험을 keep
+        # 시행 횟수 
+        # 팔의 가치 
+        # 성공 횟수
+        pass
+
+    def select_arm(self, parameter_list):
+        # 모든 암을 한번씩 선택
+        # 그중 값이 큰 암을 선택 -> argmax
+        pass
+    
+    def valueUpdate(self, parameter_list):
+        # 선택한 암의 시행횟수(행동 횟수) + 1 -> 시도에 대한 횟수 증가 
+
+        # 만약 보상을 받았다면, 성공 횟수를 증가 => 총 보상 + 1
+
+        # 시행 횟수가 0인 팔이 존재할 경우 -> 갱신하지 않는다. 
+
+        # 모든 암을 한번씩 
+        pass
+    
+    def getName(self):
+        pass
+    pass
+
+
+
+
 
 # 시뮬레이션 
 def simulator_play(algo, arms, simulator_count, episode_count):
