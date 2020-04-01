@@ -9,13 +9,13 @@
 # 모듈 가져오기 
 import numpy as np
 import matplotlib.pyplot as plt
-# %% %matplotlib inline
+# %%%matplotlib inline
 
 # 애니메이션 처리
-from matplotlib import animation
+from matplotlib import animation, rc
 # 코렙에 html을 삽입하는 모듈
-from IPython.display import HTML # 이거는 차차 해결해보자 뭘 구현하실지 모르니 
-
+# from IPython.display import HTML # 이거는 차차 해결해보자 뭘 구현하실지 모르니 
+from IPython.display import display, HTML
 
 """
 #  베이스 생성
@@ -50,14 +50,14 @@ for n in range(3):
         plt.text( n + 0.5, (3.0) - m - (0.5), str( n + m * 3 ), ha='center', va='center' ) 
         
 # 마우스 그리기(원) # '#dadada', '#50bcdf'
-plt.plot([0.5],[2.5], marker='o', color ='#dadada', markersize= 40 )
+mouse = plt.plot([0.5],[2.5], marker='o', color ='#dadada', markersize= 40 )
 
 # 눈금, 테두리 정의 
 plt.tick_params( axis='both', which='both', bottom=False, top=False,
             labelbottom=False, right=False, left=False, labelleft=False )
 # 화면에 보이기
 plt.box('off')
-# plt.show()
+plt.show()
 
 
 
@@ -120,7 +120,7 @@ def mySoftmax(theta):
     # 4.데이터를 모두 담은 배열 리턴(nan 처리)
   return np.nan_to_num(output)
   
-print(mySoftmax(theta_0))
+# print(mySoftmax(theta_0))
 
 
 # 정책에 따른 행동 정보 획득
@@ -206,11 +206,11 @@ def simulation_MIRO(updatedPolicy):
     # if 에이전트의 상태 == AGENT_LAST_STATE:
     if next_agent_state == AGENT_LAST_STATE:
       break
-    print(st_act_his)
+    # print(st_act_his)
   return st_act_his
 
 a_s_his = simulation_MIRO( theta )
-print( '1 에피스드의 총 액션수(스텝수)', len(a_s_his)-1 ) # 매번 수가 다르다. 
+# print( '에피스드 1의 총 액션수(스텝수)', len(a_s_his)-1 ) # 매번 수가 다르다. 
 
 
 
@@ -244,11 +244,12 @@ print( sum([ 1 for s0, a0 in a_s_his if s0==s ]) )
 # act_st_his  : 한번의 에피소드가 종료되고 난 이후의 히스토리
 
 def update_theta(theta_0, policy, act_st_his):
+
   eta = 0.1             # 학습 계수 
   # 학습량의 계수는 사용자에 따라 바뀔 수 있다. 
   total = len(act_st_his) - 1     # 에피소드 1이 종료 될 때까지 발생한 총 액션 수(행동수), 스탭 수 
   state_cnt, act_cnt = theta.shape  # 상태의 총 수(8개), 액션의 총 수(4개)
-  print(total, state_cnt, act_cnt)
+  # print(total, state_cnt, act_cnt)
   
   # 정책을 갱신하여 담을 자료 구조 
   upTheta = theta_0.copy()
@@ -259,44 +260,83 @@ def update_theta(theta_0, policy, act_st_his):
       if not (np.isnan(theta_0[s,a])):
         # 변동량 계산
         
-        # 상태 s에서 행동 a를 선택한 횟수
-        n_sa = 
-        # 상태 s에서 행동 a를 선택하는 정책 
-        p_sa = 
-        # 상태 s에서 무엇인가 행동을 선택한 횟수 
-        n_s  = 
+        # 특정 상태에서 특정행동을 몇번했는가? = 상태 s에서 행동 a를 선택한 횟수
+        n_sa = len([ 1 for sa in act_st_his if sa==[s,a] ])
+        # 특정 상태에서 특정행동을 하는 정책값(확률) = 상태 s에서 행동 a를 선택하는 정책 
+        p_sa = policy[s, a]
+        # 특정 상태에서 행동을 몇번했는가? = 상태 s에서 무엇인가 행동을 선택한 횟수 
+        n_s  = sum([ 1 for sa in act_st_his if sa[0]==s ])
+        #n_s  = len([ 1 for sa in act_st_his if sa[0]==s ])
 
         # 갱신 
         upTheta[s,a] = (n_sa - p_sa * n_s ) / total 
 
-  # 최종 갱신된 파라미터 세타를 반환
   # theta_0 : 상태 s에서 행동 a를 선택하는 파라미터 세타 
   # eta : 학습률(1회 학습에서의 갱신 크기)
   # upTheta : 파라미터의 세타의 변경량
+
+  # 최종 갱신된 파라미터 세타를 반환
   return theta_0 + eta * upTheta
 
-update_theta(theta, a_s_his)
 
+# 1차 갱신을 시도해서 값 확인 
+# nan은 그대로 존재, 각 선택지의 확률값들이 갱신된 값에 의해 변경되었다. 
+# print(update_theta(theta_0, theta, a_s_his))
+
+# 확인 
+# print(theta, theta_0)
 
 # 에피소드 반복 처리 (1000번)
 SIMULATOR_COUNTS = 1000
-cur_theta        = theta
+policy        = theta  # cur_theta
+# 
+STOP_EPISODE_VALUE = 10**-3 # 10^-3 -> 0.001 
 
-for ellipsis in range(SIMULATOR_COUNTS):
+for episode in range(SIMULATOR_COUNTS):
   # 에피소드 수행(갱신된 파라미터 세타를 적용)
-  a_s_his = simulation_MIRO( cur_theta )
+  a_s_his = simulation_MIRO( policy )
 
   # 파라미터 갱신 
+  #(새로운 파라미터 theta)= update_theta(theta_0, policy, a_s_his)
+
+  # nan 값이 있어서 세타로 표현
+  new_theta = update_theta( theta_0, policy, a_s_his )
+  # 새로운 정책 
+  new_policy = mySoftmax( new_theta )
 
   # 정책의 변동량(변화량)측정 
   # theta_delta = (새로운 파라미터 theta) - cur_theta
   # cur_theta   = (새로운 파라미터 theta)
+  policy_delta = np.sum(np.abs(new_policy - policy))
 
   # 로그 
+  print('에피소드:%10s, 스텝:%10s, 정책변동량:%10s' % (
+                                    episode, len(a_s_his)-1, policy_delta) )
+
+  # 이번 에피소드에 대한 내용 종료
+  # 정책을 갱신 
+  policy = new_policy
 
   # 변동량(변화량)이 임계값보다 작으면, 학습이 완료된것으로 간주 -> 중단한다. 
-  if 변동량 < 임계값(설정) :
+  # if 변동량 < 임계값(설정) :
+
+  if policy_delta < STOP_EPISODE_VALUE :
     break
   pass
 
-# 최단거리 이동 시뮬레이션 드로잉 (자동 연출 )
+# 최단거리 이동 시뮬레이션 드로잉(자동연출)
+# 최종 히스토리
+# print(a_s_his)
+
+def simulatorPlay(frame): 
+  # 작업 내역에서 첫번째 요소는 에이전트이 상태 값(위치 정보)
+  state = a_s_his[frame][0]
+  # 에이전트를 새로운 위치에 그려라
+  mouse[0].set_data( (state%3)+0.5,  3-0.5-int(state/3) )
+  return mouse[0]
+
+
+# %% from matplotlib import animation, rc
+# from IPython.display import display, HTML
+# ani = animation.FuncAnimation(fig, simulatorPlay, frames=len(a_s_his), interval=200, repeat=False)
+# HTML( ani.to_jshtml())

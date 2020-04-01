@@ -90,3 +90,7 @@
 |p7|--|--|--|--|
 
 ---
+
+
+[1] <https://jsideas.net/drlnd_review_1/>
+[2] <https://exmemory.tistory.com/24>
