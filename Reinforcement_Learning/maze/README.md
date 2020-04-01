@@ -16,6 +16,8 @@
 - 에이전트(마우스)는 4방향으로 이동이 가능 
     - 상:0, 우:1, 하:2, 좌:3, 시계방향
 
+[그래프 애니메이션](http://louistiao.me/posts/notebooks/embedding-matplotlib-animations-in-jupyter-notebooks/)
+
 ## 개요
 
 - 정책 결정의 방식

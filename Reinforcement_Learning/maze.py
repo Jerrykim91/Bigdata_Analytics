@@ -57,7 +57,7 @@ plt.tick_params( axis='both', which='both', bottom=False, top=False,
             labelbottom=False, right=False, left=False, labelleft=False )
 # 화면에 보이기
 plt.box('off')
-plt.show()
+# plt.show()
 
 
 
@@ -68,15 +68,235 @@ plt.show()
 # 미로게임판을 기반으로 설계 (차후에 자동화하면 좋겟다)
 theta_0 = np.array([
   # [상, 우, 하, 좌], 
-  [ np.nan, 1, 1, np.nan ], # 0
-  [ np.nan, 1, 1, 1 ], # 1
-  [ np.nan, np.nan, np.nan, 1 ], # 2
-  [ 1, np.nan , 1, np.nan ], # 3
-  [ 1, 1, np.nan, np.nan], # 4
+  [ np.nan, 1, 1,np.nan ], # 0
+  [ np.nan, 1, 1,1 ], # 1
+  [ np.nan, np.nan, np.nan,1 ], # 2
+  [ 1,np.nan , 1,np.nan ], # 3
+  [1 , 1, np.nan, np.nan], # 4
   [ np.nan, np.nan, 1, 1], # 5
-  [ 1, 1, np.nan, np.nan ], # 6
+  [ 1, 1, np.nan,np.nan ], # 6
   [ np.nan, np.nan, np.nan, 1], # 7 포인트  
 ])
 # 8 포인트는 골인 지점이므로 매개변수를 고려하지 않음
 
 
+# 확률 = 개별값/전체 총합 
+a = theta_0[0]
+# print(a)
+a / np.nansum(a)
+# print(a / np.nansum(a))
+
+
+a = theta_0[0]
+b = np.exp(a)   # 지수함수 
+b/np.nansum(b)
+
+
+# nan을 0으로 변환, nan을 수치로 변환s
+np.nan_to_num(b/np.nansum(b))
+# print(np.nan_to_num(b/np.nansum(b)))
+
+
+# softmax 처리 함수 구현, 사용
+# label이 다양한 경우 , 3-class 이상의 분류를 
+# 목적으로 하는 딥러닝 모델의 출력층으로 보내는 활성화 함수
+# softmax을 처리한 구성원들의 총합이 1이 된다 => 행동결정의 확률
+# 0 ~ 1사이로 theta_0가 만들어져야 하위 작업을 진행
+# 세타가 인자 
+def mySoftmax(theta):
+  # 1. 세타와 같은 크기로 배열을 생성, 초기값은 0 
+  output = np.zeros_like(theta)
+  # print(output)
+  # 2. 세타를 지수함수로 처리(결과만 봤을 때 안해도 ok)
+  exp_theta = np.exp(theta)
+  # print(exp_theta)
+  # print(exp_theta.shape[0])
+  # 3. 한줄 씩 개별값/ 총합등 처리하여 1번 자료구조에 반복적으로 담는다.
+  for i in range(exp_theta.shape[0]):
+    # print(i)
+    # 한줄씩 처리해서 한줄싹 담는다. 
+    output[i, :] = exp_theta[i, :] / np.nansum(exp_theta[i, :])
+    # print(i)
+    # 4.데이터를 모두 담은 배열 리턴(nan 처리)
+  return np.nan_to_num(output)
+  
+print(mySoftmax(theta_0))
+
+
+# 정책에 따른 행동 정보 획득
+# 인자 : policy, state 
+# policy : 각 위치에 대한 행동을 선택할수 있는 정책
+# state  : 에이전트의 현재 위치
+
+def getAction(policy, state):
+  # 리턴값을 선택하는 기준 -> 정책을 기준으로 선택 -> 정책
+  # 현태 위치에서 갈 수 있는 곳들중 랜덤하게 선택 -> 행동이 중요하다. 가치 x -> 가중치 x 
+
+  # 리턴값 => 현재 위치에서 0:상 1:우 2:하 3:좌로 이동하는 것
+  return np.random.choice([0,1,2,3], p = policy[state])
+
+
+# 행동에 따른 다음 상태(위치정보) 획득 
+# 화면 처리(에이전트가 이동을 실제로 해야하므로, 그 이동량을 계산)
+# 미로 게임의 판은 3x3이다. 
+# 좌, 우 이동 => 위치 변동량 => (+ or -)1 => 0 <- 1(현재위치) -> 2
+# 상, 하 이동 => 위치 변동량 => (+ or -)3 => 1 <- 4(현재위치) -> 7
+
+# 인자 : curState, nextAction
+# curState  : 현재 상태(본 게임에서는 에이전트의 위치) 
+# nextAction: 현재 상태에서 취해지는 다음 행동 (0, 1, 2, 3)
+def getNextState(curState, nextAction):
+
+  if nextAction == 0:   # 상
+    return curState - 3 # 위로 가는 액션을 취하면, 다음 위치는 현재위치-3이다
+  elif nextAction == 1: # 우
+    return curState + 1
+  elif nextAction == 2: # 하
+    return curState + 3
+  elif nextAction == 3: # 좌
+    return curState - 1
+  
+  # 리턴 : NextState
+
+# 시뮬레이션 상 데이터를 담을 자료구조 준비 
+# [[에이전트의상태(위치), 행동(상,우,하,좌)], ...., [8, np.nan]]
+# [8, np.nan] : 최종위치, 에피소드의 종료, 시뮬레이션상에서 파라미터 갱신시
+# 비대상이 될 것이다. 
+
+# 초기 데이터 
+AGENT_FIRST_STATE = 0
+AGENT_LAST_STATE = 8
+#st_act_his = [ [AGENT_FIRST_STATE, np.nan] ]
+
+# 현재 정책 
+theta = mySoftmax(theta_0)
+
+# 시뮬레이션 준비 
+# 에피소드 1만 수행한다.
+# 인자 : updatedPolicy
+# updatedPolicy : 갱신된 정책이 들어온다
+
+def simulation_MIRO(updatedPolicy):
+  # 최초 상태에 대한 내역만 가지고, 이동에대한 히스토리를 담을 자료 구조 준비 
+  st_act_his = [ [AGENT_FIRST_STATE, np.nan] ]
+  # 에이전트 현재위치는 변수로 받겠다. 
+  # 반복문이 돌면서 현재위치가 바뀌니까 
+  cur_agent_state = AGENT_FIRST_STATE
+  # 에이젼트의 상태가 8이 될때까지 이하 내용 반복 => 미로 탈출하기
+  while True:
+    # 에이젼트 현재상태 
+    # 현재위치 -> 정책 -> 다음 행동 결정 -> 에이전트 이동 : 행동수행 => 에이전트의 상태가 변경 
+    # 1. 정책에 따른 현재 상태(위치)에서 행동 얻기 
+    agent_action      = getAction( updatedPolicy, cur_agent_state )
+    # 2. 해당 행동에 따른 다음 상태(위치)를 획득(0~8)
+    next_agent_state  = getNextState( cur_agent_state, agent_action )
+    # 3. 에이전트의 이동 내역을 정리 
+    # [ [0, np.nan] ] 
+    # 3-1. 현재 위치에서 이동한 방향(액션)을 기록
+    # 항상 리스트의 마지막 맴버의 2번째 내용을 nan에서 구한값으로 변경
+    st_act_his[-1][-1]= agent_action
+    # [[0, agent_action]]
+    # 3-2. 새로운 위치에 대한 로그를 추가 
+    st_act_his.append([next_agent_state,np.nan])
+    # [ [0, agent_action], [next_agent_state, np.nan] ]
+    # 4. 다음 상태에 대한 위의 과정을 동일하게 반복하기 위해 
+    # cur_agent_state를 next_agent_state값으로 갱신한다.
+    cur_agent_state = next_agent_state
+
+    # if 에이전트의 상태 == AGENT_LAST_STATE:
+    if next_agent_state == AGENT_LAST_STATE:
+      break
+    print(st_act_his)
+  return st_act_his
+
+a_s_his = simulation_MIRO( theta )
+print( '1 에피스드의 총 액션수(스텝수)', len(a_s_his)-1 ) # 매번 수가 다르다. 
+
+
+
+"""
+
+# 에피스드1 이 끝날때까지 에이전트는 len(a_s_his)-1번 이동했는데
+그 중에서 에이전트가 1번 위치에 있었을 때, 1(오른쪽을) 몇번을 선택했는가? = N(s,a)
+s = 1
+a = 1 
+for s0, a0 in a_s_his :
+  if s0==s and a0==a : 
+    print(s0, a0) 
+
+
+# N(s,a)
+print( len([ 1 for s0, a0 in a_s_his if s0==s and a0==a ]) )
+print( sum([ 1 for s0, a0 in a_s_his if s0==s and a0==a ]) )
+# N(s)
+print( sum([ 1 for s0, a0 in a_s_his if s0==s ]) )
+
+"""
+
+
+# 정책 경사법을 적용한, 파라미터 θ 갱신 처리(핵심)
+# 수학 공식도 코드랑 같다 풀어서 각 의미들이 변수에 담겨 있는것과 같다. 그렇기 때문에 공식을 코드화 할 경우
+# 모두 풀어서 나열하면서 쌓아가면 조금도 수월하게 수식을 코드화 가능하다.  
+
+# 인자 : theta_0, act_st_his + policy  -> theta_0, policy, act_st_his
+# theta_0     : 미로 게임이 만들어지고 나서 각 상태별로 취할 수 있는 행동을 기술(정책)
+# policy       : theta_0를 softmax()를 통과시켜서 확률적으로 정리한 정책
+# act_st_his  : 한번의 에피소드가 종료되고 난 이후의 히스토리
+
+def update_theta(theta_0, policy, act_st_his):
+  eta = 0.1             # 학습 계수 
+  # 학습량의 계수는 사용자에 따라 바뀔 수 있다. 
+  total = len(act_st_his) - 1     # 에피소드 1이 종료 될 때까지 발생한 총 액션 수(행동수), 스탭 수 
+  state_cnt, act_cnt = theta.shape  # 상태의 총 수(8개), 액션의 총 수(4개)
+  print(total, state_cnt, act_cnt)
+  
+  # 정책을 갱신하여 담을 자료 구조 
+  upTheta = theta_0.copy()
+  # 정책 갱신 : 파라미터 세터의 변동량 계산 
+  for s in range( state_cnt ): # 0번, 1번, 2번, .. 7번위치 : 상태
+    for a in range( act_cnt ): # 0:상, 1:우, 2:하, 3:좌    : 액션
+      # np.nan이 아닌것만 갱신
+      if not (np.isnan(theta_0[s,a])):
+        # 변동량 계산
+        
+        # 상태 s에서 행동 a를 선택한 횟수
+        n_sa = 
+        # 상태 s에서 행동 a를 선택하는 정책 
+        p_sa = 
+        # 상태 s에서 무엇인가 행동을 선택한 횟수 
+        n_s  = 
+
+        # 갱신 
+        upTheta[s,a] = (n_sa - p_sa * n_s ) / total 
+
+  # 최종 갱신된 파라미터 세타를 반환
+  # theta_0 : 상태 s에서 행동 a를 선택하는 파라미터 세타 
+  # eta : 학습률(1회 학습에서의 갱신 크기)
+  # upTheta : 파라미터의 세타의 변경량
+  return theta_0 + eta * upTheta
+
+update_theta(theta, a_s_his)
+
+
+# 에피소드 반복 처리 (1000번)
+SIMULATOR_COUNTS = 1000
+cur_theta        = theta
+
+for ellipsis in range(SIMULATOR_COUNTS):
+  # 에피소드 수행(갱신된 파라미터 세타를 적용)
+  a_s_his = simulation_MIRO( cur_theta )
+
+  # 파라미터 갱신 
+
+  # 정책의 변동량(변화량)측정 
+  # theta_delta = (새로운 파라미터 theta) - cur_theta
+  # cur_theta   = (새로운 파라미터 theta)
+
+  # 로그 
+
+  # 변동량(변화량)이 임계값보다 작으면, 학습이 완료된것으로 간주 -> 중단한다. 
+  if 변동량 < 임계값(설정) :
+    break
+  pass
+
+# 최단거리 이동 시뮬레이션 드로잉 (자동 연출 )

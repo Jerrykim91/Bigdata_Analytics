@@ -182,11 +182,11 @@ import matplotlib.pyplot as plt
 ```
 
 
-## 미로 게임   
+## [미로 게임](https://github.com/wikibook/pytorch-drl/tree/master/program)   
 
 ### 미로 게임 구현 
 
-- 알고리즘 
+- 알고리즘
     - 정책 경사법 
     - Sarsa
     - Q Learning
