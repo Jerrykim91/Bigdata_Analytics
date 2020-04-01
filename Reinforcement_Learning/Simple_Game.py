@@ -29,8 +29,9 @@ class SlotArm():
         self.p = p 
         
     # 팔 선택시 보상 지급 처리 -> 세팅된 확률보다 랜덤값이 적으면 -> 1.0
-    # 아니면 0.0  
-    def draw(self): # 얘가 보상을 지급 
+    # 아니면 0.0 
+    # draw() - 얘가 보상을 지급 
+    def draw(self): 
         # 랜덤 값 : 0 ~ 1 
         if self.p > random.random() : 
             return 1.0
@@ -50,6 +51,9 @@ print([ random.random() for n in range(10)])
 
 # 멤버 변수의 파라미터들은 구현하면서 설정
 # 알고리즘 검토 후 필요 변수 확인후 조정 
+
+
+# class GameEngine() - 일단 틀 생성 
 class GameEngine():
     # 초기화 = 생성자 
     # 알고리즘에 필요한 값을 초기화 
@@ -60,7 +64,8 @@ class GameEngine():
     def select_arm(self):
         pass
 
-    # 원 액션이 완료된 후 정책(policy)을 조정 -> 파라미터를 조정한다.  
+    # 액션 마다의 정책(policy-룰)조정
+    # 파라미터를 조정
     def policyUpdate(self):
         pass
 
@@ -85,6 +90,7 @@ class GameEngine():
 
 
 # 클래스로 구현
+# class EpsilonGreedyEngine() -> 상속 받은건가 ?
 class EpsilonGreedyEngine(GameEngine):
 # 해당 알고리즘에서 팔을 선택시 랜덤 or 이미 선택해 본 것 중 선택
 # 경험해본 팔중에 가치가 높은 팔을 선택할 것이니 그것을 
@@ -92,14 +98,14 @@ class EpsilonGreedyEngine(GameEngine):
     def __init__(self, epsilon = 0.1):
         self.epsilon = epsilon  # 탐색하는 확률 
         pass
-    # 경험을 들고 있어야 하므로, 시도, 가치(보상)
-    # n_arms:arm의 개수
+
+    # n_arms:arm의 개수 - 경험을 들고 있어야 하므로, 시도, 가치(보상)-> 배열에 저장 
     def initialize(self, n_arms):
         self.n = np.zeros(n_arms) # 각 팔의 시행 횟수 -> [0,0,0]
         self.v = np.zeros(n_arms) # 각 팔의 가치      -> [0,0,0]
         pass 
   
-    # 랜덤하게 arm을 선택 
+    # select_arm() -> 랜덤하게 arm을 선택 -> 정책에 가까움 
     def select_arm(self):
         # 탐색 
         if self.epsilon > random.random():  # 0.1 보다 난수 값이 적으면 
@@ -111,7 +117,10 @@ class EpsilonGreedyEngine(GameEngine):
             return np.argmax(self.v)
         pass  
 
+
+    # valueUpdate() - 턴 당 한번 
     def valueUpdate(self, choice_arm, reward ):
+
         # 1. 이번 에피소드에 arm의 수행 횟수를 증가
         self.n[ choice_arm ] += 1
 
@@ -136,17 +145,25 @@ class EpsilonGreedyEngine(GameEngine):
     - 1. 선택한 팔의 시행 횟수 +1
     - 2. 성공시(보상을 받으면), 선택한 팔의 성공 횟수 +1
     - 3. 시행 횟수가 0인 팔이 존재하는 경우, 가치를 갱신하지 않는다 => 0으로 나눌수가 없어서
-    - 4. 시행 횟수가 모두 0이상이면, 팔의 가치에 대해서 탐색과 이용에 대한 균형을 잡는다는 대전에 하에, 모든 팔의 가치를 갱신한다
+    - 4. 시행 횟수가 모두 0이상이면, 팔의 가치에 대해서 탐색과 이용에 대한 균형을 잡는다는 대전에 하에, 모든 팔의 가치를 갱신한다.
 
     - 모든 팔을 한번 이상 사용할때까지는 가치 갱신을 하지 않는다 => 탐색
-    - 모든 팔을 최소 1회 이상 사용해 봤다면, 전체 arm에대 가치 갱신을 시도한다
+    - 모든 팔을 최소 1회 이상 사용해 봤다면, 전체 arm에대 가치 갱신을 시도한다.
+
 """
 # Image( '/content/drive/My Drive/Colab Notebooks/2기/dl_data/UCB1.jpeg', width=400 )
-
+"""
+    algo = '' 
+    arms = '' 
+    simulator_count = ''
+    episode_count = ''
+    
+"""
 # UCB1 알고리즘 추가 
 class UCB1Engine(GameEngine):
     # 왜 인잇함수는 없을까 ?
-
+    # 각 타입 확인 할 것 
+    # 왜 거기 들어가는지 확인할 것 
     def initialize(self):
         # 경험을 keep
         # 시행 횟수 
@@ -154,27 +171,28 @@ class UCB1Engine(GameEngine):
         # 성공 횟수
         pass
 
-    def select_arm(self, parameter_list):
+    def select_arm(self, parameter_list): 
         # 모든 암을 한번씩 선택
         # 그중 값이 큰 암을 선택 -> argmax
         pass
     
-    def valueUpdate(self, parameter_list):
+    def valueUpdate(self, parameter_list):  # self, choice_arm, reward
         # 선택한 암의 시행횟수(행동 횟수) + 1 -> 시도에 대한 횟수 증가 
 
         # 만약 보상을 받았다면, 성공 횟수를 증가 => 총 보상 + 1
 
         # 시행 횟수가 0인 팔이 존재할 경우 -> 갱신하지 않는다. 
 
-        # 모든 암을 한번씩 
+        # UCB1의 수식에 의해 모든 팔에 대한 가치 갱신
+            # 성공률       = (개별팔의성공수)/(개별팔의시행횟수)
+            # 바이어스     = ( (2*math.log(모든시행횟수))/(개별팔의시행횟수) )**0.5
+            # 개별팔의가치 = 성공률 + 편향(바이어스)
+        # 
         pass
     
     def getName(self):
-        pass
+        return 'UCB1 알고리즘'
     pass
-
-
-
 
 
 # 시뮬레이션 

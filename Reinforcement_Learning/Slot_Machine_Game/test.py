@@ -23,10 +23,10 @@ import matplotlib.pyplot as plt
 class SlotArm():
 
     # __init__() -> 생성자 함수 생성 -> 초기화
-    def __init__(self, p): # p가 뭔데 
+    def __init__(self, p): # p : 객체를 만들 때 주어지는 확률값
         self.p = p 
         
-    # draw - 뭔지 모르겠음 
+    # draw - 얘가 보상을 지급 
     def draw(self):  # 보상? # 세팅 값은 어딨는데 ? 
         # 뭔가 그리는데 거기값이 0 아니면 1 -> 랜덤 값
         # 랜덤 값 : 0 ~ 1 
@@ -81,8 +81,8 @@ class GameEngine():
 - 이런 확률값 중 가장 좋은 성능을 내는 값 0.1인 경우가 많다.
 
 """
-from IPython.display import Image
-Image( '../data/ε-greedy.jpeg' ) # ε-greedy.jpeg
+# from IPython.display import Image
+# Image( '../data/ε-greedy.jpeg' ) # ε-greedy.jpeg
 # 현재 행동후 현재의 가치=
 # (처음부터 이전 시도까지의 수행양)* 이전번 가치 + (1/전체 시도 횟수)*현재 받은 보상
 
@@ -135,26 +135,47 @@ class EpsilonGreedyEngine(GameEngine):
         return 'ε-greedy 알고리즘 이용'
 
 
-def simulator_play():
-    # 각 타입 확인 할것 
-    # 왜 거기 들어가는지 확인할것 
-    algo = '' 
-    arms = '' 
-    simulator_count = ''
-    episode_count = ''
+# UCB1 알고리즘 추가 
+class UCB1Engine(GameEngine):
+    # 왜 인잇함수는 없을까 ?
+    # 각 타입 확인 할 것 
+    # 왜 거기 들어가는지 확인할 것 
+    def initialize(self):
+        # 경험을 keep
+        # 시행 횟수 
+        # 팔의 가치 
+        # 성공 횟수
+        pass
 
+    def select_arm(self, parameter_list): 
+        # 모든 암을 한번씩 선택
+        # 그중 값이 큰 암을 선택 -> argmax
+        pass
+    
+    def valueUpdate(self, parameter_list):  # self, choice_arm, reward
+        # 선택한 암의 시행횟수(행동 횟수) + 1 -> 시도에 대한 횟수 증가 
 
-    # 리턴 -> 시간과 보상 
+        # 만약 보상을 받았다면, 성공 횟수를 증가 => 총 보상 + 1
+
+        # 시행 횟수가 0인 팔이 존재할 경우 -> 갱신하지 않는다. 
+
+        # UCB1의 수식에 의해 모든 팔에 대한 가치 갱신
+            # 성공률       = (개별팔의성공수)/(개별팔의시행횟수)
+            # 바이어스     = ( (2*math.log(모든시행횟수))/(개별팔의시행횟수) )**0.5
+            # 개별팔의가치 = 성공률 + 편향(바이어스)
+        # 
+        pass
+    
+    def getName(self):
+        return 'UCB1 알고리즘'
     pass
-
-
-
 
 
 # 게임 시뮬레이터 생성 
 
 
-# 머신 준비 
+
+# 머신 준비 ---------------------------
 arms = [ SlotArm(0.3), SlotArm(0.5), SlotArm(0.9) ] # 슬롯머신의 팔을 3개 준비 
 # 3개의 Arm은 reward(1.0)를 지급하는 확률이 다르다.
 

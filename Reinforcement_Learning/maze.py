@@ -58,3 +58,25 @@ plt.tick_params( axis='both', which='both', bottom=False, top=False,
 # 화면에 보이기
 plt.box('off')
 plt.show()
+
+
+
+"""
+
+"""
+# 파라미터 θ의 초기값 준비
+# 미로게임판을 기반으로 설계 (차후에 자동화하면 좋겟다)
+theta_0 = np.array([
+  # [상, 우, 하, 좌], 
+  [ np.nan, 1, 1, np.nan ], # 0
+  [ np.nan, 1, 1, 1 ], # 1
+  [ np.nan, np.nan, np.nan, 1 ], # 2
+  [ 1, np.nan , 1, np.nan ], # 3
+  [ 1, 1, np.nan, np.nan], # 4
+  [ np.nan, np.nan, 1, 1], # 5
+  [ 1, 1, np.nan, np.nan ], # 6
+  [ np.nan, np.nan, np.nan, 1], # 7 포인트  
+])
+# 8 포인트는 골인 지점이므로 매개변수를 고려하지 않음
+
+
