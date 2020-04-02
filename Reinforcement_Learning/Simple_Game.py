@@ -106,6 +106,7 @@ class EpsilonGreedyEngine(GameEngine):
         pass 
   
     # select_arm() -> 랜덤하게 arm을 선택 -> 정책에 가까움 
+    # 탐험과 활용 혹은 탐색과 이용
     def select_arm(self):
         # 탐색 
         if self.epsilon > random.random():  # 0.1 보다 난수 값이 적으면 

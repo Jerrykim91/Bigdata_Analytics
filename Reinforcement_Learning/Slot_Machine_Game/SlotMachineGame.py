@@ -7,6 +7,8 @@
     L UCB1Engine Class # 알고리즘 - UCB1
   L GameSimulator Class or function
 
+https://github.com/bgalbraith/bandits
+
 '''
 # 필요 패키지 
 import numpy as np
@@ -15,31 +17,20 @@ import random
 import math
 
 import matplotlib.pyplot as plt
-# %matplotlib inline
 # %% %matplotlib inline
-
 
 # 머신 겉
 class SlotArm():
+  # 슬롯이 하는일 
+  # 팔을 당긴다 -> 엔진에 
+  # 동작과 동시에 확률을 가진다. -> 자기자신 ,확률
+  # 보상이 주어진다.
+
+
+
+  # 생성자 
+
+  # 보상 지급
   pass
 
-# 머신 속 
-class GameEngine():
-  pass
-
-
-
-# 머신 속 구동원리 - 알고리즘 
-
-class E_GreedyEngine():
-  pass
-
-class UCB1Engine():
-  pass
-
-# 시뮬레이션 틀 생성 
-def GameSimulator():
-  pass
-
-# 시뮬 구동 
 
