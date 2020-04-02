@@ -19,11 +19,27 @@ import matplotlib.pyplot as plt
 # %% %matplotlib inline
 
 
+# 머신 겉
+class SlotArm():
+  pass
+
+# 머신 속 
+class GameEngine():
+  pass
 
 
 
+# 머신 속 구동원리 - 알고리즘 
 
+class E_GreedyEngine():
+  pass
 
+class UCB1Engine():
+  pass
 
+# 시뮬레이션 틀 생성 
+def GameSimulator():
+  pass
 
+# 시뮬 구동 
 
