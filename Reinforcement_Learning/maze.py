@@ -6,10 +6,13 @@
 # ! pip install tensorflow==1.15
 
 
+
+#%% 
+%matplotlib inline
 # 모듈 가져오기 
 import numpy as np
 import matplotlib.pyplot as plt
-# %%%matplotlib inline
+
 
 # 애니메이션 처리
 from matplotlib import animation, rc
@@ -336,8 +339,10 @@ def simulatorPlay(frame):
   return mouse[0]
 
 
-# %% from matplotlib import animation, rc
-# from IPython.display import display, HTML
-# ani = animation.FuncAnimation(fig, simulatorPlay, frames=len(a_s_his), interval=200, repeat=False)
-# HTML( ani.to_jshtml())
+from matplotlib import animation, rc
+from IPython.display import display, HTML
+ani = animation.FuncAnimation(fig, simulatorPlay, frames=len(a_s_his), interval=200, repeat=False)
+HTML( ani.to_jshtml())
 
+
+# %%

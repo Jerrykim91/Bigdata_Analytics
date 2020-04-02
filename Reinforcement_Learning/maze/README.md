@@ -1,5 +1,11 @@
 
-# 미로 게임 
+# 알고리즘 정의 
+
+
+
+
+
+# 게임 구현 : 미로 게임 
 
 - 정책경사법을 활용한 미로게임
 
@@ -16,7 +22,7 @@
 - 에이전트(마우스)는 4방향으로 이동이 가능 
     - 상:0, 우:1, 하:2, 좌:3, 시계방향
 
-[그래프 애니메이션](http://louistiao.me/posts/notebooks/embedding-matplotlib-animations-in-jupyter-notebooks/)
+- [그래프 애니메이션](http://louistiao.me/posts/notebooks/embedding-matplotlib-animations-in-jupyter-notebooks/)
 
 ## 개요
 
@@ -94,3 +100,5 @@
 
 [1] <https://jsideas.net/drlnd_review_1/>
 [2] <https://exmemory.tistory.com/24>
+
+## [미로 게임](https://github.com/wikibook/pytorch-drl/tree/master/program)   
