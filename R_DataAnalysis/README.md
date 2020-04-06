@@ -56,3 +56,25 @@ conda install -c r r-recommended=3.5.1
 conda install -c r r-irkernel
 
 ```
+
+## Vscode setting
+- [경로설정](https://ark1st.tistory.com/7)
+
+
+
+### 아나콘다 가상환경 지정 
+
+```bash
+conda create -n test python=3 # 콘다 가상환경 생성 
+conda env list # 생성된건지 확인 
+activate test # 가상 환경 실행 
+conda deactivate # 빠져 나가기
+
+conda env remove -n test # 가상환경 삭제하기
+
+```
+---
+
+```bash
+conda install nb_conda  # 주피터 안에서 개별 패키지 관리가 가능하게 해주는 패키지 
+```
