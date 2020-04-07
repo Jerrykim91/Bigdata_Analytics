@@ -36,7 +36,7 @@ library(readxl)
 
 # 엑셀 파일 불러오기
 df_exam <- read_excel("./data/excel_exam.xlsx")  # 엑셀 파일을 불러와서 df_exam에 할당
-df_exam                                   # 출력
+df_exam                                          # 출력
 
 mean(df_exam$english)
 mean(df_exam$science)
@@ -68,9 +68,9 @@ write.csv(df_midterm, file = "./data/df_midterm.csv")
 
 #-------------------------------------------------------------------------------#
 
-save(df_midterm, file = "./data/df_midterm.rda")
-rm(df_midterm)
-load("./data/df_midterm.rda")
+save(df_midterm, file = "./data/df_midterm.rda") # 저장
+rm(df_midterm) # 
+load("./data/df_midterm.rda") # 로딩해보기
 
 #-------------------------------------------------------------------------------#
 
@@ -108,6 +108,6 @@ SalesRate
 df_sales<- data.frame(Product, Price , SalesRate)
 df_sales
 
-mean(df_sales$Price)
-mean(df_sales$SalesRate)
+mean(df_sales$Price)      # Price 기준으로
+mean(df_sales$SalesRate)  # SalesRate 기준으로
 #-------------------------------------------------------------------------------#
