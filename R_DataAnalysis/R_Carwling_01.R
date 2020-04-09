@@ -88,7 +88,7 @@ for(i in 1 : length(url_list)){
         content <- c(content, b6)
     }else {
         b2 <- b[which(str_detect(b, "post_content")):which(str_detect(b, "post_ccls"))]
-        b3 <- paste(b2, collapse="")
+        b3 <- paste(b2, collapse="") 
         str(b3) 
         b4 <- gsub("<.*?>", "", b3)
         str(b4)
