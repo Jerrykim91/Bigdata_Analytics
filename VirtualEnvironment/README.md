@@ -2,7 +2,7 @@
 
 ### 참조 교제 
 
-- 빅데이터  하둡, 하이브로 시작하기 :<https://wikidocs.net/book/2203>
+- 빅데이터  하둡, 하이브로 시작하기 :< https://wikidocs.net/book/2203 >
 
 ```bash
 
@@ -14,6 +14,7 @@ $ start-all.sh                           # 하둡 구동
 $ start-master.sh                        # 마스터 구동 
 $ start-slave.sh spark://127.0.0.1:7077  # 워커 구동
 $ jps # 잘 열였는지 확인 
+$ sudo ufw status   # 방화벽 확인
 #############################
 
 ### 중지
@@ -21,8 +22,10 @@ $ jps # 잘 열였는지 확인
 # 중지
 $ stop-all.sh
 $ stop-master.sh
-$ stpp-slave.sh
+$ stop-slave.sh
 #############################
+# 모든 컨테이너 중지하기 
+$ docker stop $(docker ps -a -q)
 ```
 
 # 환결성정 - 1
@@ -135,12 +138,9 @@ $ java -version
 
 ```
 
-
-
 ## 하둡 파일 다운로드
 
 #### 크롬에서 설치 : < http://apache.tt.co.kr/hadoop/common/hadoop-3.1.3/ >
-
 
 ```bash
 # mobaxterm에서 하둡 다운로드 
@@ -398,18 +398,17 @@ $ jps
 깃 설치 `sudo apt-get install git`
 
 ```bash
+
 # 레지스트리 다운로드 
 동일하게 `git clone 레지스트리 경로.git`
 # 레지스트리 삭제 
-$rm -rf ~/레지스트리 이름 
+`rm -rf ~/레지스트리 이름 `
 
 ```
-
+## 방화벽 
 
 ```bash
-
-# 방화벽 
-UFW 활성화/비활성화
+# UFW 활성화/비활성화
 sudo ufw enable  # 활성화 
 sudo ufw disable # 비활성화 
 sudo ufw status verbose # UFW 상태 확인
@@ -441,15 +440,11 @@ sudo ufw logging off
 ```bash
  
 $ start-all.sh # 하둡 구동 
-
 $ sudo apt install scala -y # scala 설치 
-
 $ wget http://apache.tt.co.kr/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz # 다운로드
-
 $ tar -xzvf spark-2.4.5-bin-hadoop2.7.tgz  # 압축출기 
 
 $ nano ~/.bashrc
-
 # 가장 밑에 추가
 export SPARK_HOME=/home/user1/spark-2.4.5-bin-hadoop2.7
 export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
@@ -523,7 +518,7 @@ $ jupyter notebook
 
 ```
 
-### 다운로드하는동안 도커 설치 
+### 다운로드하는 동안 도커 설치 
 
 
 ```bash
@@ -558,6 +553,7 @@ $ docker exec -it mariadb-01 bash # mariadb-01컨테이너로 진입
 $ exit # 여기까지 도커 
 
 ```
+## 주피터에서 파일 열어서 진행 
 
 ```py
 # 주피터에서 파일 열어서 진행 
@@ -603,7 +599,6 @@ spark.sql("insert into db05.t01 values(4,'a1',40)")
 
 # 테이블 내용 가져오기
 spark.sql("select * from db05.t01").show()
-
 # DELETE / UPDATE는 hadoop에서 지원하지 않음.
 
 ```
@@ -616,6 +611,7 @@ $ wget https://archive.apache.org/dist/kafka/2.2.0/kafka_2.11-2.2.0.tgz
 $ tar -zxvf kafka_2.11-2.2.0.tgz # 압축풀기
 
 $ nano ~/.bashrc  
+# 마지막줄에 추가 
 export KAFKA_HOME=/home/user1/kafka_2.11-2.2.0
 export PATH=$PATH:$KAFKA_HOME/bin
 
@@ -664,25 +660,27 @@ $ jps
 # [필요시] kafka 서버 중지
 $ ~/kafka_2.11-2.2.0/bin/kafka-server-stop.sh    
 
-
-# 토픽 생성 => testTopic2  => 채널
+# 토픽 생성 => testTopic2  => '채널'
 $ ~/kafka_2.11-2.2.0/bin/kafka-topics.sh --create --zookeeper 127.0.0.1:2181 --replication-factor 1 --partitions 1 --topic testTopic2
 
 # 토픽 확인
 $ ~/kafka_2.11-2.2.0/bin/kafka-topics.sh --list --zookeeper 127.0.0.1:2181   
 
+체크 >>>
+# 실시간 데이터 확인 시 사용 -> 오호라
 
-Producer생성
-$ ~/kafka_2.11-2.2.0/bin/kafka-console-producer.sh --broker-list 192.168.0.19:9092 --topic testTopic2
+# Producer생성 -> 입력 
+$ ~/kafka_2.11-2.2.0/bin/kafka-console-producer.sh --broker-list 192.168.0.70:9092 --topic testTopic2
 
-Consumer생성
-$ ~/kafka_2.11-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server 192.168.0.19:9092 --topic testTopic2 --from-beginning
+# Consumer생성 -> 출력 
+$ ~/kafka_2.11-2.2.0/bin/kafka-console-consumer.sh --bootstrap-server 192.168.0.70:9092 --topic testTopic2 --from-beginning
 
-[필요 시 : 토픽삭제]
+# [필요 시 : 토픽삭제]
 $ ~/kafka_2.11-2.2.0/bin/kafka-topics.sh --zookeeper 127.0.0.1:2181 --delete --topic testTopic2
 
 ```
-### 서버 안에서 
+
+### 서버 안에서 - vscode에서 파일 열어서 진행 
 ```py
 ############################################
 import time, threading, multiprocessing
@@ -718,7 +716,7 @@ class Consumer(multiprocessing.Process):
 
     def run(self):
         #auto_offset_reset => latest(마지막), earliest(처음부터)
-        consumer = KafkaConsumer(bootstrap_servers='192.168.0.19',
+        consumer = KafkaConsumer(bootstrap_servers='192.168.0.70',
             auto_offset_reset='latest', consumer_timeout_ms=1000)
         consumer.subscribe(['testTopic2'])    
         while not self.stop_event.is_set():
@@ -740,7 +738,7 @@ class Producer(threading.Thread):
         self.stop_event.set()
 
     def run(self): 
-        producer = KafkaProducer(bootstrap_servers='192.168.0.19:9092')
+        producer = KafkaProducer(bootstrap_servers='192.168.0.70:9092')
 
         while not self.stop_event.is_set():
             str = input('send msg : ')
@@ -769,12 +767,11 @@ if __name__ == '__main__':
 
 ############################################
 ```
+### 구동
+
 ```bash
-
 $ start-all.sh          # hadoop 구동
-
 $ start-master.sh       # spark 마스트 구동
-
 $ start-slave.sh spark://127.0.0.1:7077 # spark 슬레이브 구동
 
 # kafka필요 라이브러리 다운로드
@@ -800,7 +797,7 @@ spark = SparkSession.builder.master("local[*]") \
     .getOrCreate()
 
 df = spark.readStream.format("kafka") \
-    .option("kafka.bootstrap.servers","192.168.0.19:9092") \
+    .option("kafka.bootstrap.servers","192.168.0.70:9092") \
     .option("subscribe", "testTopic2") \
     .option("startingOffsets", "latest") \
     .load()
@@ -817,13 +814,293 @@ df1.writeStream.outputMode("append") \
     .awaitTermination()
 
 ```
+
 # 환경설정 - 4 
+
+```bash
+######################################################
+SERVER1, SERVER2, SERVER3에 hostname변경
+$ sudo hostnamectl set-hostname 192.168.0.1X  => 완료
+# 192.168.0.70
+$ sudo hostnamectl set-hostname 192.168.0.2X  => 변경 후 리부팅
+# 192.168.0.4
+$ sudo hostnamectl set-hostname 192.168.0.3X  => 변경 후 리부팅
+# 192.168.0.104
+
+######################################################
+SERVER1, SERVER2, SERVER3에 편집
+$ sudo nano /etc/hosts
+위쪽에 추가
+192.168.0.1X  (탭)   hadoop1
+192.168.0.2X  (탭)   hadoop2
+192.168.0.3X  (탭)   hadoop3
+
+$ sudo service networking restart  => 편집 적용
+
+
+
+######################################################
+SERVER1, SERVER2, SERVER3에 편집
+
+$ nano ~/.bashrc  => 환경설정 파일
+가장 밑으로 이동후 복사
+export HADOOP_HOME=/home/user1/hadoop-3.1.3
+export HADOOP_COMMON_HOME=/home/user1/hadoop-3.1.3
+export HADOOP_MAPRED_HOME=${HADOOP_HOME}    => 추가
+export HADOOP_HDFS_HOME=${HADOOP_HOME}      => 추가
+export YARN_HOME=${HADOOP_HOME}             => 추가
+export HDFS_NAMENODE_USER="user1"
+export HDFS_DATANODE_USER="user1"
+export HDFS_SECONDARYNAMENODE_USER="user1"
+export YARN_RESOURCEMANAGER_USER="user1"
+export YARN_NODEMANAGER_USER="user1"
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin
+
+$ source ~/.bashrc    => 환경설정 적용하기
+
+######################################################
+# 여기까지 완성 
+
+SERVER1, SERVER2, SERVER3 편집
+
+$ nano ~/hadoop-3.1.3/etc/hadoop/core-site.xml    => 변경할 것 없음
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://192.168.0.1:9000</value>
+    </property>
+</configuration>
+
+
+$ nano ~/hadoop-3.1.3/etc/hadoop/hdfs-site.xml
+<configuration>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/home/user1/hadoop-3.1.3/data/nameNode</value>
+    </property>
+
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/home/user1/hadoop-3.1.3/data/dataNode</value>
+    </property>
+
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value> <!-- 데이터 노드 개수만큼 -->
+    </property>
+</configuration>
+
+
+$ nano ~/hadoop-3.1.3/etc/hadoop/mapred-site.xml   => 편집
+<configuration>
+    <property>
+        <name>mapreduce.jobtracker.address</name>
+        <value>192.168.0.1X:54311</value><!-- 첫번째 PC로 지정 -->
+    </property>
+
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+</configuration>
+
+
+$ nano ~/hadoop-3.1.3/etc/hadoop/yarn-site.xml  => 편집
+<configuration>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+
+    <property>
+        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+    </property>
+
+    <property>
+       <name>yarn.resourcemanager.hostname</name>
+       <value>192.168.0.1X</value><!-- 첫번째 PC로 지정 -->
+    </property>
+</configuration>
+
+
+###################################################3
+SERVER1에서 인증키 생성 
+$ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+$ chmod 0600 ~/.ssh/authorized_keys
+
+SERVER2, SERVER3에 폴더생성 /home/user1/폴더 아래에 .ssh폴더가 있어야 함
+$ mkdir ~/.ssh
+
+SERVER1에서
+$ scp ~/.ssh/authorized_keys 192.168.0.2:/home/user1/.ssh/authorized_keys
+$ scp ~/.ssh/authorized_keys 192.168.0.3:/home/user1/.ssh/authorized_keys
+
+* 192.168.0.1에서 192.168.0.2 으로 암호없이 접속가능해야함.
+* 192.168.0.1에서 192.168.0.3 으로 암호없이 접속가능해야함.
+
+*******이것만!!******************
+SERVER1에서 암호없이 접속되는지 확인
+$ ssh 192.168.0.2   exit
+$ ssh 192.168.0.3   exit
+
+####################################################
+SERVER1에서만
+$ sudo ufw allow 54311
+
+$ nano ~/hadoop-3.1.3/etc/hadoop/masters
+192.168.0.1
+
+$ nano ~/hadoop-3.1.3/etc/hadoop/workers
+192.168.0.1
+192.168.0.2
+192.168.0.3
+
+#################################################
+
+SERVER1, SERVER2, SERVER3에서 수행
+$ rm -rf ~/hadoop-3.1.3/data/nameNode
+$ rm -rf ~/hadoop-3.1.3/data/dataNode
+
+$ mkdir -p ~/hadoop-3.1.3/data/nameNode
+$ mkdir -p ~/hadoop-3.1.3/data/dataNode
+
+name노드 포멧
+$ hdfs namenode -format
+
+#################################################
+
+SERVER1에서 수행하면 SERVER2, SERVER3이 자동 구동됨
+$ start-all.sh
+
+SERVER1에서 jps
+29555 Jps
+28804 SecondaryNameNode
+29205 NodeManager
+29031 ResourceManager
+28362 NameNode
+28540 DataNode
+
+SERVER2에서 jps
+3394 NodeManager
+3230 DataNode
+3519 Jps
+
+SERVER3에서 jps
+3161 DataNode
+3437 Jps
+3325 NodeManager
+
+#################################################
+
+크롬에서 192.168.0.1:9870 수행했을때 datanode가 3개
+
+##################################################
+
+$ start-master.sh
+$ start-slave.sh spark://127.0.0.1:7077
+$ jps
+```
+```py
+##################################################
+# 데이터 프레임을 df1_table로 만듬
+# df1.createOrReplaceTempView("df1_table")
+from pyspark.sql import SparkSession
+import pandas as pd
+
+# 파이썬 설치 위치 지정
+import os
+os.environ['PYSPARK_PYTHON']='/home/user1/anaconda3/bin/python3'
+os.environ['PYSPARK_DRIVER_PYTHON']='/home/user1/anaconda3/bin/python3'
+
+# 스파크 객체 생성 
+spark = SparkSession.builder.master("local[*]") \
+    .enableHiveSupport().appName("hive01") \
+    .config("spark.sql.warehouse.dir","/user/hive/warehouse") \
+    .config("spark.datasource.hive.metastore.uris","hdfs://192.168.0.19:9000") \
+    .getOrCreate()
+
+# 테이터 프레임 생성
+df1 = spark.createDataFrame([(1,'a',10),(2,'b',20),(3,'c',30)]).toDF("id","name","age")
+df1.printSchema()
+df1.show()
+
+df1.createOrReplaceTempView("table1")  #데이터 프레임을 table1로 만듬
+spark.sql("SELECT id, name FROM table1").show()
+
+spark.sql("create database db06") # DB 생성
+
+#데이터 프레임으로 테이블 생성
+spark.sql("create table db06.t01 as select * from table1")
+
+#테이블 내용 가져옴.
+spark.sql("select * from db06.t01 where age>20").show()
+
+######### graph ########################################################
+```
+`$ wget http://dl.bintray.com/spark-packages/maven/graphframes/graphframes/0.7.0-spark2.4-s_2.11/graphframes-0.7.0-spark2.4-s_2.11.jar`
+
+```py
+# 파일명 : graph01
+from pyspark.sql import SparkSession
+
+import os
+os.environ['PYSPARK_PYTHON']='/home/user1/anaconda3/bin/python3'
+os.environ['PYSPARK_DRIVER_PYTHON']='/home/user1/anaconda3/bin/python3'
+
+spark = SparkSession.builder.master("local[*]").enableHiveSupport().appName("spark_app1") \
+    .config('spark.driver.extraClassPath','/home/user1/graphframes-0.7.0-spark2.4-s_2.11.jar') \
+    .config('spark.jars.packages', 'graphframes:graphframes:0.7.0-spark2.4-s_2.11').getOrCreate()
+
+from graphframes import GraphFrame
+from pyspark.sql.functions import desc     
+
+# https://towardsdatascience.com/graphframes-in-jupyter-a-practical-guide-9b3b346cebc5
+v1 = spark.createDataFrame([('1', 'Carter', 'Derrick', 50), 
+                                  ('2', 'May', 'Derrick', 26),
+                                 ('3', 'Mills', 'Jeff', 80),
+                                  ('4', 'Hood', 'Robert', 65),
+                                  ('5', 'Banks', 'Mike', 93),
+                                 ('98', 'Berg', 'Tim', 28),
+                                 ('99', 'Page', 'Allan', 16)],
+                                 ['id', 'name', 'firstname', 'age'])
+e1 = spark.createDataFrame([('1', '2', 'friend'), 
+                               ('2', '1', 'friend'),
+                              ('3', '1', 'friend'),
+                              ('1', '3', 'friend'),
+                               ('2', '3', 'follows'),
+                               ('3', '4', 'friend'),
+                               ('4', '3', 'friend'),
+                               ('5', '3', 'friend'),
+                               ('3', '5', 'friend'),
+                               ('4', '5', 'follows'),
+                              ('98', '99', 'friend'),
+                              ('99', '98', 'friend')],
+                              ['src', 'dst', 'type'])
+                              
+g = GraphFrame(v1, e1)
+## Take a look at the DataFrames
+#g.vertices.show()
+print(g.vertices.count())
+print(g.edges.count())
+
+# g.edges.show()
+## Check the number of edges of each vertex
+g.degrees.show()     
+
+g.bfs(fromExpr="id='1'", toExpr="id='4'", maxPathLength=30).show(truncate=False)
+
+
+###################################################################33
+
+```
 
 ## 우븐투에서 도커 설치 
 - Docker 설치 이미지 리포지토리 키 가져오기
 
 ```bash
-
 # 리포지토리 키 가져오기 
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
@@ -886,6 +1163,8 @@ $ docker start tf01
 
 # 환경설정 - 5 
 
+- 도커 컨테이너 실행해서 
+
 ```bash 
 # 도커 컨테이너 열어서 
 
@@ -896,8 +1175,10 @@ $ docker image
 
 $ docker run -it --name spark01 -p 8889:8888 jupyter/pyspark-notebook
 
-# 선택적 
-#---------------------------------------------------------------------
+```
+### 선택적 
+
+```bash
 
 # Docker 설치 이미지 리포지토리 키 가져오기
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -913,12 +1194,12 @@ $ sudo usermod -aG docker vagrant
 $ docker --version
    >>> Docker version 19.03.5, build 633a0ea838
 
-# 재부팅
-#---------------------------------------------------------------------
+# 재부팅 **********여기까지 Dockerfile*******************
+##########################################################
+```
+### 도커에서 
 
-
-**********여기까지 Dockerfile*******************
-
+```bash
 # 수동으로 이미지 빌드
 $ docker build --no-cache -t hadoop3 .
 
@@ -933,9 +1214,9 @@ $ docker run --hostname=hadoop3 -p 8088:8088 -p 9870:9870 -p 9864:9864 -p 19888:
 $ docker container ls
 
 ```
+## 주피터에 작성 
 
 ```py
-# 주피터에 작성 
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StringType, IntegerType, DoubleType, DateType
 
@@ -960,7 +1241,6 @@ df1 = spark.createDataFrame([
 
 df1.printSchema()
 df1.show()
-
 
 schema = StructType() \
     .add("height", DoubleType(), True) \
@@ -1006,8 +1286,9 @@ pipelineModel.transform(df2).show(truncate=False) # 파이프라인 모델을 �
 
 ```
 
+### 우분투에서
 ```bash
-# [우분투]
+
 $ sudo apt update -y
 $ sudo apt install git -y
 
@@ -1016,6 +1297,7 @@ $ git clone https://github.com/bbonnin/docker-hadoop-3.git
 # 다운받으면 docker-hadoop-3폴더가 생성됨.
 $ cd docker-hadoop-3
 
+# 폴더로 이동해서 Dockerfile을 연 다음 Dockerfile의 모든 내용 지우고 아래로 내용으로 변경
 ***** Dockerfile의 모든 내용 지우고 아래로 내용으로 변경 ******
 
 FROM ubuntu:latest
@@ -1112,22 +1394,95 @@ https://nosqlbooster.com/downloads
 # 컨테이너 내부에서 다운로드
 $ docker exec -it mongodb bash
 
+[필요시] $ mv 파일명 /home
 $ apt update
-
 $ apt install wget
-
 $ cd /home
-
-# [필요시]
-$ mv 파일명 /home
-
 $ wget https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.11/2.4.1/mongo-spark-connector_2.11-2.4.1.jar
 $ wget https://repo1.maven.org/maven2/org/mongodb/mongo-java-driver/3.9.1/mongo-java-driver-3.9.1.jar
 
-# EXIT로 컨테이너 탈출
+EXIT로 컨테이너 탈출
 
-# spark01  컨테이너 구동후 주피터 실행
+# spark01  컨테이너 구동 후 주피터 실행
 $ docker start spark01
 
 $ docker logs spark01
+```
+### 주피터에서 
+```py
+from pyspark.sql import SparkSession
+import os
+#from pyspark.sql.functions import col, column, window
+from pyspark.sql import functions as F
+
+
+spark = SparkSession \
+    .builder \
+    .appName("myApp") \
+    .config("spark.mongodb.input.uri", "mongodb://192.168.99.100:32766/db1.table1") \
+    .config("spark.mongodb.output.uri", "mongodb://192.168.99.100:32766/db1.table1") \
+    .config('spark.driver.extraClassPath', './home/mongo-spark-connector_2.11-2.4.0.jar') \
+    .config('spark.driver.extraClassPath', './home/mongo-java-driver-3.9.0.jar') \
+    .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.11:2.4.0') \
+    .getOrCreate()
+
+people = spark.createDataFrame([("Bilbo Baggins",  50), ("Gandalf", 1000), ("Thorin", 195), ("Balin", 178), ("Kili", 77),
+   ("Dwalin", 169), ("Oin", 167), ("Gloin", 158), ("Fili", 82), ("Bombur", None)], ["name", "age"])
+
+# DB에 추가
+people.write.format("com.mongodb.spark.sql.DefaultSource").mode("overwrite").save()
+
+# DB에서 가져오기
+df = spark.read.format("com.mongodb.spark.sql.DefaultSource").load()
+df.show()
+
+```
+```py
+#-------------------------------------------------------
+import pandas as pd
+data = {
+    "juso" : ["서울시","인천시","부산시","대구시"],
+    "name" : ["kim","lee","park","choi"],
+    "age" : [20, 30 , 40, 50]}
+
+# pandas 데이터 프레임
+data = pd.DataFrame(data)
+
+# spark 데이터 프레임
+df2 = spark.createDataFrame(data)
+df2.show()
+
+# DB에 저장
+df2.write.format("com.mongodb.spark.sql.DefaultSource") \
+    .option("spark.mongodb.output.uri", "mongodb://192.168.99.100:32766/db1.table2") \
+    .mode("overwrite").save()
+
+# DB에서 읽기
+df2 = spark.read.format("com.mongodb.spark.sql.DefaultSource") \
+    .option("spark.mongodb.input.uri","mongodb://192.168.99.100:32766/db1.table2") \
+    .load()
+
+df2.createOrReplaceTempView("table2")
+spark.sql("SELECT age, juso, name FROM table2").show()
+
+#--------------------------------------------------------------------------------
+
+import pymongo
+
+conn = pymongo.MongoClient("192.168.99.100", 32766) #서버주소, 포트번호
+db = conn.get_database("db1") #db선택
+collection = db.get_collection("table3")
+dic1 = {"id":"pyid", "pw":"aaa","name":'abc', "age":33} #딕셔너리 생성
+
+# mongodb에 추가
+collection.insert_one(dic1)
+
+# mongodb에 값 가져오기
+get_member = collection.find()
+
+# 가져온 값 출력하기
+for tmp in get_member:
+    print(tmp['id'], tmp['pw'], tmp['name'], tmp['age'], end='\n')
+    
+
 ```
