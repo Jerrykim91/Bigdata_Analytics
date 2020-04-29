@@ -26,3 +26,4 @@ p = re.compile('[a-zA-Z ]*')
 tmp = p.sub( '' ,  src_text )
 tmp.lower()[:100]
 
+# https://www.flickr.com/search/?media=photos&tags=%ED%95%9C%EA%B5%AD%EC%9D%8C%EC%8B%9D

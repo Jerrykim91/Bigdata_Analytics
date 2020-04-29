@@ -11,7 +11,7 @@ options = webdriver.ChromeOptions()
 options.add_argument('window-size=1920x1080')
 
 # 드라이버 가지고 오기 
-driver = webdriver.Chrome('./data/chromedriver.exe', chrome_options= options)
+driver = webdriver.Chrome('../../data/chromedriver.exe', chrome_options= options)
 
 # 드라이버에 진입할 경로 전달
 driver.get("http://ihongss.com/webboard")
